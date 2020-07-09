@@ -9,12 +9,13 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ServiceDetail from "./pages/ServiceDetail";
 
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Router, Switch, Route } from "react-router-dom";
+import history from "./history";
 
 function App() {
   return (
     <div>
-      <Router>
+      <Router history={history}>
         <Navbar />
         <Navbar id="navbar-clone" />
         <Sidebar />

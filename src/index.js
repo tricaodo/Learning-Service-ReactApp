@@ -6,12 +6,15 @@ import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import reducer from "./reducers";
 import thunk from "redux-thunk";
+import { ToastProvider } from "react-toast-notifications";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 const store = createStore(reducer, /* preloadedState, */ composeEnhancers(applyMiddleware(thunk)));
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <ToastProvider>
+      <App />
+    </ToastProvider>
   </Provider>,
   document.getElementById('root')
 );

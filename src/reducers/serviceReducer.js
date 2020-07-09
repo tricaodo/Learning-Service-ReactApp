@@ -2,7 +2,7 @@ import _ from "lodash";
 
 import { FETCH_SERVICES, FETCH_SERVICE } from "../types";
 
-export const serviceReducer = (services = {}, action) => {
+export default (services = {}, action) => {
     switch (action.type) {
         case FETCH_SERVICES:
             return { ...services, ..._.mapKeys(action.payload, "id") };

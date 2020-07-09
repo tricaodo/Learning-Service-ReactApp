@@ -1,7 +1,7 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 
 import React from 'react'
-import { fetchServices } from "../actions";
+import { fetchServices } from "../actions/serviceAction";
 import ServiceItem from '../components/service/ServiceItem';
 import Hero from '../components/Hero';
 import { connect } from "react-redux";

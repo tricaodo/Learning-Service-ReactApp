@@ -1,6 +1,8 @@
+/* eslint jsx-a11y/anchor-is-valid: 0 */
 import React from "react";
 import { connect } from "react-redux";
-import { fetchService } from "../actions";
+import { fetchService } from "../actions/serviceAction";
+import Spinner from "../components/Spinner";
 
 class ServiceDetail extends React.Component {
 
@@ -8,8 +10,9 @@ class ServiceDetail extends React.Component {
         this.props.fetchService(this.props.match.params.id);
     }
 
+
     render() {
-        if(!this.props.service) return <div></div>
+        if(!this.props.service) return <Spinner />
         const {service} = this.props;
         return (
             <section className="hero is-fullheight is-default is-bold service-detail-page">
@@ -28,6 +31,7 @@ class ServiceDetail extends React.Component {
                                             <figure className="image is-48x48">
                                                 <img
                                                     className="is-rounded"
+                                                    alt="test"
                                                 />
                                             </figure>
                                         </div>
