@@ -6,31 +6,55 @@ import FAQ from "./pages/FAQ";
 import Profile from "./pages/Profile";
 import Services from "./pages/Services";
 import Login from "./pages/Login";
+import Logout from "./pages/Logout";
 import Register from "./pages/Register";
 import ServiceDetail from "./pages/ServiceDetail";
 
 import { Router, Switch, Route } from "react-router-dom";
 import history from "./history";
+import { connect } from "react-redux";
+import { onAuthStateChanged } from "./actions/authAction";
+import Spinner from './components/Spinner';
+import ServiceCreate from './pages/services/ServiceCreate';
 
-function App() {
-  return (
-    <div>
-      <Router history={history}>
-        <Navbar />
-        <Navbar id="navbar-clone" />
-        <Sidebar />
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/faq" component={FAQ} />
-          <Route path="/services/:id" component={ServiceDetail} />
-          <Route path="/services" component={Services} />
-          <Route path="/profile" component={Profile} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-        </Switch>
-      </Router>
-    </div>
-  );
+class App extends React.Component {
+  componentDidMount() {
+    this.props.onAuthStateChanged();
+  }
+  UNSAFE_componentWillUpdate(){
+    const script = document.createElement("script");
+    script.src = `${process.env.PUBLIC_URL}/js/fresh.js`;
+    script.async = true
+    document.body.appendChild(script); 
+  }
+  render() {
+    if(!this.props.auth.isResolved) return <Spinner />
+    return (
+      <div>
+        <Router history={history}>
+          <Navbar auth={this.props.auth} />
+          <Navbar auth={this.props.auth} id="navbar-clone" />
+          <Sidebar />
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/faq" component={FAQ} />
+            <Route path="/services/new" component={ServiceCreate} />
+            <Route path="/services/:id" component={ServiceDetail} />
+            <Route path="/services" component={Services} />
+            <Route path="/profile" component={Profile} />
+            <Route path="/login" component={Login} />
+            <Route path="/logout" component={Logout} />
+            <Route path="/register" component={Register} />
+          </Switch>
+        </Router>
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return { auth: state.auth }
+}
+export default connect(mapStateToProps, {
+  onAuthStateChanged
+})(App);

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
 import { signIn } from "../actions/authAction";
 import { useToasts } from "react-toast-notifications";
+import { Redirect } from "react-router-dom";
 
 const Login = (props) => {
     const { register, handleSubmit } = useForm();
@@ -18,7 +19,9 @@ const Login = (props) => {
                 addToast(error, { appearance: 'error', autoDismiss: true, autoDismissTimeout: 3000 })
             })
     }
-
+    if (props.auth.isLoggined) {
+        return <Redirect to="/" />
+    }
     return (
         <div className="auth-page">
             <div className="container has-text-centered">
@@ -77,7 +80,9 @@ const Login = (props) => {
         </div>
     );
 }
-
-export default connect(null, {
+const mapStateToProps = state => {
+    return { auth: state.auth };
+}
+export default connect(mapStateToProps, {
     signIn
 })(Login);

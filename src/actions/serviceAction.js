@@ -1,4 +1,5 @@
-import { FETCH_SERVICES, FETCH_SERVICE } from "../types";
+import { FETCH_SERVICES, FETCH_SERVICE, CREATE_SERVICE } from "../types";
+import history from "../history";
 import db from "../db";
 export const fetchServices = () => dispatch => {
     let services = []
@@ -18,5 +19,17 @@ export const fetchService = id => dispatch => {
         .get()
         .then(doc => {
             dispatch({ type: FETCH_SERVICE, payload: { id: doc.id, ...doc.data() } });
+        });
+}
+
+export const createService = (userId, serviceData) => dispatch => {
+    const data = { userId, ...serviceData };
+    db
+        .collection("services")
+        .add(data)
+        .then(doc => {
+            const service = { id: doc.id, ...data };
+            dispatch({ type: CREATE_SERVICE, payload: service });
+            history.push("/");
         });
 }

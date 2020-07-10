@@ -4,19 +4,19 @@ import RegisterForm from "../components/auth/RegisterForm";
 import { connect } from "react-redux";
 import { register } from "../actions/authAction";
 import { useToasts } from "react-toast-notifications";
+import { Redirect } from "react-router-dom";
 
 const Register = (props) => {
     const { addToast } = useToasts();
     const handleRegister = info => {
         props
             .register(info)
-            .then(() => {
-            })
+            .then(() => { })
             .catch(error => {
-                console.log(error);
                 addToast(error.message, { appearance: 'error', autoDismiss: true, autoDismissTimeout: 3000 })
             })
     }
+    if (props.auth.isLoggined) return <Redirect to="/" />
     return (
         <div className="auth-page">
             <div className="container has-text-centered">
@@ -40,7 +40,7 @@ const Register = (props) => {
     );
 }
 const mapStateToProps = state => {
-    return state;
+    return { auth: state.auth };
 }
 export default connect(mapStateToProps, {
     register

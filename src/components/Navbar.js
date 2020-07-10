@@ -2,6 +2,36 @@
 import { Link } from "react-router-dom";
 import React from 'react'
 const Navbar = (props) => {
+  const renderAuthLink = () => {
+    return props.auth.profile.fullName
+      ?
+      (
+        // menu error searching for Mutation Observer.
+        <React.Fragment>
+          <Link to="/" className="navbar-item is-secondary">
+            Hello {props.auth.profile.fullName}
+          </Link>
+          <Link to="/logout" className="navbar-item">
+            <span className="button signup-button rounded is-danger raised">
+              Logout
+                  </span>
+          </Link>
+        </React.Fragment>
+      )
+      :
+      (
+        <React.Fragment>
+          <Link to="/login" className="navbar-item is-secondary modal-trigger" data-modal="auth-modal">
+            Log in
+          </Link>
+          <Link to="/register" className="navbar-item">
+            <span className="button signup-button rounded secondary-btn raised">
+              Register
+                  </span>
+          </Link>
+        </React.Fragment>
+      )
+  }
   return (
     <nav
       id={props.id || ''}
@@ -62,9 +92,9 @@ const Navbar = (props) => {
               </a>
 
               <div className="navbar-dropdown">
-                <a className="navbar-item">
-                  Dropdown item
-                </a>
+                <Link to="/services/new" className="navbar-item">
+                  Create Service
+                </Link>
                 <a className="navbar-item">
                   Dropdown item
                 </a>
@@ -73,14 +103,7 @@ const Navbar = (props) => {
                 </a>
               </div>
             </div>
-            <Link to="/login" className="navbar-item is-secondary modal-trigger" data-modal="auth-modal">
-              Log in
-            </Link>
-            <Link to="/register" className="navbar-item">
-              <span className="button signup-button rounded secondary-btn raised">
-                Register
-              </span>
-            </Link>
+            {renderAuthLink()}
           </div>
         </div>
       </div>

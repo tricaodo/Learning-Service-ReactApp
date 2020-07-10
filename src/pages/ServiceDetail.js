@@ -28,12 +28,6 @@ class ServiceDetail extends React.Component {
                                 <div className="service-header-container">
                                     <div className="media service-user">
                                         <div className="media-left">
-                                            <figure className="image is-48x48">
-                                                <img
-                                                    className="is-rounded"
-                                                    alt="test"
-                                                />
-                                            </figure>
                                         </div>
                                         <div className="media-content">
                                             <p className="title is-4">Tri Do</p>
