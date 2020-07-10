@@ -1,7 +1,7 @@
 import fb from "firebase/app";
 import "firebase/auth";
 import db from "../db";
-import { REGISTER, REGISTER_ERROR, SIGNIN, SIGNOUT } from "../types";
+import { REGISTER, REGISTER_ERROR, SIGNIN, SIGNOUT, FETCH_USER_SERVICES } from "../types";
 import history from "../history";
 
 const createProfile = profile => {
@@ -60,6 +60,17 @@ export const signOut = () => async dispatch => {
     await fb.auth().signOut()
     history.push("/");
     dispatch({ type: SIGNOUT })
+}
+
+export const fetchUserServices = userId => dispatch => {
+    db
+        .collection("services")
+        .where("userId", "==", userId)
+        .get()
+        .then(res => {
+            const services = res.docs.map(doc => ({id: doc.id, ...doc.data()}));
+            dispatch({type: FETCH_USER_SERVICES, payload: services});
+        })
 }
 
 export const onAuthStateChanged = () => dispatch => {

@@ -1,12 +1,12 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
-const ServiceItem = ({service}) => {
-
+const ServiceItem = ({ service, auth }) => {
     const shortText = (text, maxLength = 50) => {
-        if(!text) return "";
-        if(text.length < maxLength) return text;
+        if (!text) return "";
+        if (text.length < maxLength) return text;
         return `${text.substr(0, maxLength)}...`
     }
 
@@ -23,11 +23,13 @@ const ServiceItem = ({service}) => {
                     <p>{shortText(service.description)}</p>
                 </div>
                 <div className="card-action">
-                    <Link to={`services/${service.id}`} className="button btn-align-md accent-btn raised">Get Started</Link>
+                    <Link to={`services/${auth.profile.id}/${service.id}`} className="button btn-align-md accent-btn raised">Get Started</Link>
                 </div>
             </div>
         </div>
     )
 }
-
-export default ServiceItem;
+const mapStateToProps = state => {
+    return { auth: state.auth };
+}
+export default connect(mapStateToProps)(ServiceItem);

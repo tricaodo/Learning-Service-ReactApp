@@ -17,10 +17,14 @@ export const fetchService = id => dispatch => {
         .collection("services")
         .doc(id)
         .get()
-        .then(doc => {
+        .then(async doc => {
+            // const info = await doc.ref.get();
+            console.log(doc.data());
+            // console.log(info.data());
             dispatch({ type: FETCH_SERVICE, payload: { id: doc.id, ...doc.data() } });
         });
 }
+
 
 export const createService = (userId, serviceData) => dispatch => {
     const data = { userId, ...serviceData };

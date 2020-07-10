@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import { onAuthStateChanged } from "./actions/authAction";
 import Spinner from './components/Spinner';
 import ServiceCreate from './pages/services/ServiceCreate';
+import UserServices from './pages/services/UserServices';
 
 class App extends React.Component {
   componentDidMount() {
@@ -39,7 +40,8 @@ class App extends React.Component {
             <Route path="/" exact component={Home} />
             <Route path="/faq" component={FAQ} />
             <Route path="/services/new" component={ServiceCreate} />
-            <Route path="/services/:id" component={ServiceDetail} />
+            <Route exact path="/services/:userId/:id" component={ServiceDetail} />
+            <Route path="/services/:userId" component={UserServices} />
             <Route path="/services" component={Services} />
             <Route path="/profile" component={Profile} />
             <Route path="/login" component={Login} />

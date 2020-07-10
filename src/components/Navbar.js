@@ -1,6 +1,6 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
-import { Link } from "react-router-dom";
 import React from 'react'
+import { Link } from "react-router-dom";
 const Navbar = (props) => {
   const renderAuthLink = () => {
     return props.auth.profile.fullName
@@ -88,19 +88,16 @@ const Navbar = (props) => {
             </Link>
             <div className="navbar-item has-dropdown is-hoverable">
               <a className="navbar-link">
-                Dropdown
+                Manage
               </a>
 
               <div className="navbar-dropdown">
                 <Link to="/services/new" className="navbar-item">
                   Create Service
                 </Link>
-                <a className="navbar-item">
-                  Dropdown item
-                </a>
-                <a className="navbar-item">
-                  Dropdown item
-                </a>
+                <Link to={`/services/${props.auth.profile.id}`} className="navbar-item">
+                  My Services
+                </Link>
               </div>
             </div>
             {renderAuthLink()}
@@ -110,5 +107,4 @@ const Navbar = (props) => {
     </nav>
   )
 }
-
-export default Navbar
+export default Navbar;
