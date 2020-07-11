@@ -31,6 +31,16 @@ $muted-grey: #999;
 $section-grey: #fbfbfb;
 
 
+  .feature-card.offer-card {
+    height: auto;
+    padding-bottom: 20px;
+}
+  
+  
+.b-m-r {
+    margin-right: 5px;
+}
+
 
 /* ==========================================================================
 General Keyframes animations
@@ -1507,3 +1517,6 @@ body #backtotop a {
 .modal {
     text-align: left !important;
 }
+
+
+

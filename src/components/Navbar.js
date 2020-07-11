@@ -98,6 +98,12 @@ const Navbar = (props) => {
                 <Link to={`/services/${props.auth.profile.id}`} className="navbar-item">
                   My Services
                 </Link>
+                <Link to="/offers/sent" className="navbar-item">
+                  Sent Offers
+                </Link>
+                <Link to="/offers/received" className="navbar-item">
+                  Received Offers
+                </Link>                                
               </div>
             </div>
             {renderAuthLink()}
