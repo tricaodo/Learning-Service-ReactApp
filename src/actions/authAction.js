@@ -62,10 +62,10 @@ export const signOut = () => async dispatch => {
     dispatch({ type: SIGNOUT })
 }
 
-export const fetchUserServices = userId => dispatch => {
+export const fetchUserServices = userId => dispatch => { 
     db
         .collection("services")
-        .where("userId", "==", userId)
+        .where("uid", "==", userId)
         .get()
         .then(res => {
             const services = res.docs.map(doc => ({id: doc.id, ...doc.data()}));

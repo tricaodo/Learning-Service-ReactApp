@@ -25,7 +25,7 @@ const Modal = props => {
                         {props.children}
                     </section>
                     <footer className="modal-card-foot">
-                        <button className="button is-success" onClick={props.handleSubmit}>Save changes</button>
+                        <button className="button is-success" onClick={() => {props.handleSubmit();handleActive(false) }}>Save changes</button>
                         <button className="button" onClick={() => handleActive(false)}>Cancel</button>
                     </footer>
                 </div>

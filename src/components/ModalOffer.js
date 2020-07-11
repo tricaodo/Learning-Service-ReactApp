@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import { useToasts } from "react-toast-notifications";
 import Modal from "./Modal";
+import { createRef } from "../actions/helper";
+import { createOffer } from "../actions/offerAction";
 
 const ModalOffer = props => {
     const [offerDetail, setOfferDetail] = useState({
@@ -12,6 +15,8 @@ const ModalOffer = props => {
         note: ""
     });
 
+    const { addToast } = useToasts();
+
     const handleChange = ({ target: { name, value } }) => {
         if (name === "time") {
             const totalPrice = Math.round(props.service.price * value * 100) / 100;
@@ -21,7 +26,26 @@ const ModalOffer = props => {
     }
 
     const handleSubmit = () => {
-        console.log(offerDetail);
+        const copyOffer = updateOffer();
+        createOffer(copyOffer)
+            .then(
+                () => {
+                    // closeModal();
+                    addToast("Offer was created successfully", { appearance: 'success', autoDismiss: true, autoDismissTimeout: 3000 })
+                },
+                error =>
+                    addToast(error.message, { appearance: 'error', autoDismiss: true, autoDismissTimeout: 3000 }))
+    }
+
+    const updateOffer = () => {
+        const { auth, service } = props;
+        const copyOffer = { ...offerDetail };
+        copyOffer.fromUser = createRef("profiles", auth.profile.id);
+        copyOffer.toUser = createRef("profiles", service.user.uid);
+        copyOffer.service = createRef("services", service.id);
+        copyOffer.price = parseInt(offerDetail.price, 10);
+        copyOffer.time = parseInt(offerDetail.time, 10);
+        return copyOffer;
     }
 
     return (
@@ -50,7 +74,7 @@ const ModalOffer = props => {
             </div>
             <div className="service-price has-text-centered">
                 <div className="service-price-title">
-                    Uppon acceptance "Filip Jerga" will charge you:
+                    Uppon acceptance {props.service.user.fullName} will charge you:
                 </div>
                 <div className="service-price-value">
                     <h1 className="title">${`${offerDetail.price}`}</h1>

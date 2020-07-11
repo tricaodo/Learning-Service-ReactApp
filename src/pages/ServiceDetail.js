@@ -13,7 +13,7 @@ class ServiceDetail extends React.Component {
 
     render() {
         if (!this.props.service) return <Spinner />
-        const { service } = this.props;
+        const { service, auth } = this.props;
         return (
             <section className="hero is-fullheight is-default is-bold service-detail-page">
                 <div className="hero-body">
@@ -46,7 +46,7 @@ class ServiceDetail extends React.Component {
                                 </h2>
                                 <br />
                                 <div className="has-text-centered">
-                                    <ModalOffer service={service} />
+                                    <ModalOffer service={service} auth={auth} />
                                 </div>
                             </div>
                         </div>
@@ -58,7 +58,7 @@ class ServiceDetail extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    return { service: state.services[ownProps.match.params.id] };
+    return { service: state.services[ownProps.match.params.id], auth: state.auth };
 }
 
 export default connect(mapStateToProps, {
