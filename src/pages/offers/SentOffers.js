@@ -2,9 +2,15 @@ import React from "react";
 import { connect } from "react-redux";
 import { fetchSentOffers } from "../../actions/offerAction";
 import ServiceItem from "../../components/service/ServiceItem"
+import { newCollaboration } from "../../actions/helper";
 class SentOffers extends React.Component {
   componentDidMount() {
     this.props.fetchSentOffers(this.props.auth.profile.id);
+  }
+
+  handleCollaboration = offer => {
+    const collaboration = newCollaboration({ offer, fromUser: this.props.auth.profile })
+    console.log(collaboration);
   }
 
   renderSentOffers = () => {
@@ -33,6 +39,13 @@ class SentOffers extends React.Component {
                 <span className="label">Time:</span> {offer.time} hours
                 </div>
             </div>
+            {
+              offer.status === "accepted" &&
+              <div>
+                <hr />
+                <button className="button is-success" onClick={() => this.handleCollaboration(offer)}>Collaborate</button>
+              </div>
+            }
           </ServiceItem>
         </div>
       )

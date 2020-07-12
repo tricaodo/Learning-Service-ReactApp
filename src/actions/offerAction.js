@@ -8,11 +8,12 @@ export const createOffer = offer => {
 }
 
 const extractOfferData = async (offer, offerType) => {
-    offer.service = await offer.service.get()
-    offer[offerType] = await offer[offerType].get();
+    const service = await offer.service.get()
+    const user = await offer[offerType].get();
 
-    offer.service = offer.service.data();
-    offer[offerType] = offer[offerType].data();
+    offer.service = service.data();
+    offer.service.id = service.id;
+    offer[offerType] = user.data();
 
     return offer;
 }
@@ -28,7 +29,7 @@ export const fetchSentOffers = userId => dispatch => {
                 const processedData = await extractOfferData(doc.data(), "toUser");
                 return { id: doc.id, ...processedData }
             }));
-            dispatch({ type: "FETCH_OFFERS", payload: offers, offerType: "sent" });
+            dispatch({ type: "FETCH_SENT_OFFERS", payload: offers });
         })
 }
 
@@ -43,6 +44,16 @@ export const fetchReceivedOffers = userId => dispatch => {
                 const processedData = await extractOfferData(doc.data(), "fromUser");
                 return { id: doc.id, ...processedData };
             }))
-            dispatch({ type: "FETCH_OFFERS", payload: offers, offerType: "received" });
+            dispatch({ type: "FETCH_RECEIVED_OFFERS", payload: offers });
+        })
+}
+
+export const processOffer = (offerId, status) => dispatch => {
+    db
+        .collection("offers")
+        .doc(offerId)
+        .update({ status: status })
+        .then(() => {
+            dispatch({ type: "UPDATE_RECEIVED_OFFER", payload: { offerId: offerId, status } })
         })
 }

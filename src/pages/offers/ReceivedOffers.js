@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchReceivedOffers } from "../../actions/offerAction";
+import { fetchReceivedOffers, processOffer } from "../../actions/offerAction";
 import ServiceItem from "../../components/service/ServiceItem"
 class ReceivedOffers extends React.Component {
   componentDidMount() {
@@ -8,17 +8,17 @@ class ReceivedOffers extends React.Component {
   }
 
   renderStatus = status => {
-    if(status === "pending") return "is-warning";
-    if(status === "accepted") return "is-success";
-    if(status === "declined") return "is-danger";
+    if (status === "pending") return "is-warning";
+    if (status === "accepted") return "is-success";
+    if (status === "declined") return "is-danger";
   }
 
-  handleSuccess = offer => {
-    console.log(offer)
+  handleSuccess = offerId => {
+    this.props.processOffer(offerId, "accepted");
   }
 
-  handleDecline = offer => {
-    console.log(offer);
+  handleDecline = offerId => {
+    this.props.processOffer(offerId, "declined");
   }
 
   renderReceivedOffers = () => {
@@ -46,13 +46,16 @@ class ReceivedOffers extends React.Component {
               <div>
                 <span className="label">Time:</span> {offer.time} hours
               </div>
-              
+
             </div>
             <hr />
-            <div>
-              <button className="button is-success b-m-r" onClick={() => this.handleSuccess(offer)}>Accept</button>
-              <button className="button is-danger" onClick={() => this.handleDecline(offer)}>Decline</button>
-            </div>
+            {
+              offer.status === "pending" &&
+              <div>
+                <button className="button is-success b-m-r" onClick={() => this.handleSuccess(offer.id)}>Accept</button>
+                <button className="button is-danger" onClick={() => this.handleDecline(offer.id)}>Decline</button>
+              </div>
+            }
           </ServiceItem>
         </div>
       )
@@ -78,5 +81,6 @@ const mapStateToProps = state => {
   return { auth: state.auth, receivedOffers: state.offer.received };
 }
 export default connect(mapStateToProps, {
-  fetchReceivedOffers
+  fetchReceivedOffers,
+  processOffer
 })(ReceivedOffers);
