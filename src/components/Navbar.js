@@ -1,13 +1,16 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 import React from 'react'
 import { Link } from "react-router-dom";
+import { fetchMessages } from "../actions/authAction";
+import { connect } from "react-redux"
 import ReceivedMessages from './ReceivedMessages';
 const Navbar = (props) => {
+
+
   const renderAuthLink = () => {
     return props.auth.profile.fullName
       ?
       (
-        // menu error searching for Mutation Observer.
         <React.Fragment>
           <Link to="/" className="navbar-item is-secondary">
             Hello {props.auth.profile.fullName}
@@ -20,6 +23,7 @@ const Navbar = (props) => {
               <ReceivedMessages />
             </div>
           </div>
+
           <Link to="/logout" className="navbar-item">
             <span className="button signup-button rounded is-danger raised">
               Logout
@@ -41,6 +45,7 @@ const Navbar = (props) => {
         </React.Fragment>
       )
   }
+
   return (
     <nav
       id={props.id || ''}
@@ -88,31 +93,31 @@ const Navbar = (props) => {
           <div className="navbar-end">
             <Link to="/" className="navbar-item is-secondary">
               Home
-            </Link>
+              </Link>
             <Link to="/services" className="navbar-item is-secondary">
               Services
-            </Link>
+              </Link>
             <Link to="/faq" className="navbar-item is-secondary">
               FAQ
-            </Link>
+              </Link>
             <div className="navbar-item has-dropdown is-hoverable">
               <a className="navbar-link">
                 Manage
-              </a>
+                </a>
 
               <div className="navbar-dropdown">
                 <Link to="/services/new" className="navbar-item">
                   Create Service
-                </Link>
+                  </Link>
                 <Link to={`/services/${props.auth.profile.id}`} className="navbar-item">
                   My Services
-                </Link>
+                  </Link>
                 <Link to="/offers/sent" className="navbar-item">
                   Sent Offers
-                </Link>
+                  </Link>
                 <Link to="/offers/received" className="navbar-item">
                   Received Offers
-                </Link>
+                  </Link>
               </div>
             </div>
             {renderAuthLink()}
@@ -122,4 +127,10 @@ const Navbar = (props) => {
     </nav>
   )
 }
-export default Navbar;
+const mapStateToProps = state => {
+  console.log()
+  return state
+}
+export default connect(mapStateToProps, {
+  fetchMessages
+})(Navbar);

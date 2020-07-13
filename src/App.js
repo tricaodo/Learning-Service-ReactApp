@@ -21,7 +21,13 @@ import SentOffers from './pages/offers/SentOffers';
 import ReceivedOffers from './pages/offers/ReceivedOffers';
 
 class App extends React.Component {
-
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     doneLoading: false,
+  //     scriptElement: null
+  //   }
+  // }
   processAPI = () => {
     return new Promise((resolve, reject) => {
       this.props.onAuthStateChanged();
@@ -34,18 +40,31 @@ class App extends React.Component {
       }, 1000);
     })
   }
+  // static getDerivedStateFromProps(props, state){
+  //   const {auth, fetchMessages} = props;
+  //   const {doneLoading} = state;
+
+  //   if (Object.keys(auth.profile).length > 0 && !doneLoading) {
+  //     fetchMessages(auth.profile.id);
+  //     return {doneLoading: true}
+  //   }
+  //   return null;
+  // }
 
   componentDidMount() {
+    this.props.onAuthStateChanged();
     this.processAPI()
-      .then(uid => this.props.fetchMessages(uid))
+      .then(uid => { this.props.fetchMessages(uid)})
       .catch(statusCode => console.log(statusCode))
   }
-  UNSAFE_componentWillUpdate() {
+
+  UNSAFE_componentWillUpdate(){
     const script = document.createElement("script");
     script.src = `${process.env.PUBLIC_URL}/js/fresh.js`;
     script.async = true
-    document.body.appendChild(script);
+    document.body.appendChild(script);    
   }
+
   render() {
     if (!this.props.auth.isResolved) return <Spinner />
     return (

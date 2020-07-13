@@ -20,7 +20,8 @@ export const register = info => async dispatch => {
             email: info.email,
             avatar: info.avatar,
             services: [],
-            description: ""
+            description: "",
+            messages: []
         };
         createProfile(profile)
             .then(() => {
@@ -76,6 +77,7 @@ export const fetchUserServices = userId => dispatch => {
 
 
 export const onAuthStateChanged = () => dispatch => {
+    console.log("onAuthStateChange")
     fb
         .auth()
         .onAuthStateChanged(info => {
@@ -96,8 +98,16 @@ export const fetchMessages = userId => dispatch => {
         .doc(userId)
         .collection("messages")
         .onSnapshot(snapShot => {
-            const messages = snapShot.docs.map(doc => ({messageId: doc.id, ...doc.data()}))
+            const messages = snapShot.docs.map(doc => ({ messageId: doc.id, ...doc.data() }))
             dispatch({ type: FETCH_MESSAGES, payload: messages })
-            // console.log(snapShot.docs)
         });
+}
+
+export const updateMessageAsRead = (userId, messageId) => {
+    db
+        .collection("profiles")
+        .doc(userId)
+        .collection("messages")
+        .doc(messageId)
+        .update({isRead: true});
 }
