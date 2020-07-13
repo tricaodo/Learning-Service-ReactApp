@@ -2,15 +2,26 @@ import React from "react";
 import { connect } from "react-redux";
 import { fetchSentOffers } from "../../actions/offerAction";
 import ServiceItem from "../../components/service/ServiceItem"
-import { newCollaboration } from "../../actions/helper";
+import { newCollaboration, sendMessage } from "../../actions/helper";
+import { collaborate } from "../../actions/collaborationAction";
+import { withToastManager } from "react-toast-notifications";
 class SentOffers extends React.Component {
   componentDidMount() {
     this.props.fetchSentOffers(this.props.auth.profile.id);
   }
 
   handleCollaboration = offer => {
-    const collaboration = newCollaboration({ offer, fromUser: this.props.auth.profile })
-    console.log(collaboration);
+    const { toastManager } = this.props;
+    const collaboration = newCollaboration({ offer, fromUser: this.props.auth.profile });
+    const message = sendMessage({ offer, fromUser: this.props.auth.profile });
+    this.props.collaborate({ collaboration, message })
+      .then(() => {
+        toastManager.add("Collaboration was created successfully", {
+          appearance: 'success',
+          autoDismiss: true,
+          autoDismissTimeout: 3000
+        })
+      });
   }
 
   renderSentOffers = () => {
@@ -40,7 +51,7 @@ class SentOffers extends React.Component {
                 </div>
             </div>
             {
-              offer.status === "accepted" &&
+              offer.status === "accepted" && !offer.collaborateCreated &&
               <div>
                 <hr />
                 <button className="button is-success" onClick={() => this.handleCollaboration(offer)}>Collaborate</button>
@@ -69,5 +80,6 @@ const mapStateToProps = state => {
   return { auth: state.auth, sentOffers: state.offer.sent }
 }
 export default connect(mapStateToProps, {
-  fetchSentOffers
-})(SentOffers);
+  fetchSentOffers,
+  collaborate
+})(withToastManager(SentOffers));

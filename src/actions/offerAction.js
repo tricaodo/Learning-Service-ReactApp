@@ -1,5 +1,6 @@
 import db from "../db";
 import { createRef } from "./helper";
+import { FETCH_SENT_OFFERS, FETCH_RECEIVED_OFFERS, UPDATE_RECEIVED_OFFER } from "../types";
 
 export const createOffer = offer => {
     return db
@@ -29,7 +30,7 @@ export const fetchSentOffers = userId => dispatch => {
                 const processedData = await extractOfferData(doc.data(), "toUser");
                 return { id: doc.id, ...processedData }
             }));
-            dispatch({ type: "FETCH_SENT_OFFERS", payload: offers });
+            dispatch({ type: FETCH_SENT_OFFERS, payload: offers });
         })
 }
 
@@ -44,7 +45,7 @@ export const fetchReceivedOffers = userId => dispatch => {
                 const processedData = await extractOfferData(doc.data(), "fromUser");
                 return { id: doc.id, ...processedData };
             }))
-            dispatch({ type: "FETCH_RECEIVED_OFFERS", payload: offers });
+            dispatch({ type: FETCH_RECEIVED_OFFERS, payload: offers });
         })
 }
 
@@ -54,6 +55,6 @@ export const processOffer = (offerId, status) => dispatch => {
         .doc(offerId)
         .update({ status: status })
         .then(() => {
-            dispatch({ type: "UPDATE_RECEIVED_OFFER", payload: { offerId: offerId, status } })
+            dispatch({ type: UPDATE_RECEIVED_OFFER, payload: { offerId: offerId, status } })
         })
 }

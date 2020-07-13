@@ -1,6 +1,7 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 import React from 'react'
 import { Link } from "react-router-dom";
+import ReceivedMessages from './ReceivedMessages';
 const Navbar = (props) => {
   const renderAuthLink = () => {
     return props.auth.profile.fullName
@@ -11,6 +12,14 @@ const Navbar = (props) => {
           <Link to="/" className="navbar-item is-secondary">
             Hello {props.auth.profile.fullName}
           </Link>
+          <div className="navbar-item has-dropdown is-hoverable">
+            <a className="navbar-link">
+              Messages
+            </a>
+            <div className="navbar-dropdown navbar-dropdown-messages">
+              <ReceivedMessages />
+            </div>
+          </div>
           <Link to="/logout" className="navbar-item">
             <span className="button signup-button rounded is-danger raised">
               Logout
@@ -103,7 +112,7 @@ const Navbar = (props) => {
                 </Link>
                 <Link to="/offers/received" className="navbar-item">
                   Received Offers
-                </Link>                                
+                </Link>
               </div>
             </div>
             {renderAuthLink()}

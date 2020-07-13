@@ -13,7 +13,7 @@ import ServiceDetail from "./pages/ServiceDetail";
 import { Router, Switch, Route } from "react-router-dom";
 import history from "./history";
 import { connect } from "react-redux";
-import { onAuthStateChanged } from "./actions/authAction";
+import { onAuthStateChanged, fetchMessages } from "./actions/authAction";
 import Spinner from './components/Spinner';
 import ServiceCreate from './pages/services/ServiceCreate';
 import UserServices from './pages/services/UserServices';
@@ -21,8 +21,24 @@ import SentOffers from './pages/offers/SentOffers';
 import ReceivedOffers from './pages/offers/ReceivedOffers';
 
 class App extends React.Component {
+
+  processAPI = () => {
+    return new Promise((resolve, reject) => {
+      this.props.onAuthStateChanged();
+      setTimeout(() => {
+        if (this.props.auth.profile) {
+          resolve(this.props.auth.profile.id);
+        } else {
+          reject(404);
+        }
+      }, 1000);
+    })
+  }
+
   componentDidMount() {
-    this.props.onAuthStateChanged();
+    this.processAPI()
+      .then(uid => this.props.fetchMessages(uid))
+      .catch(statusCode => console.log(statusCode))
   }
   UNSAFE_componentWillUpdate() {
     const script = document.createElement("script");
@@ -62,5 +78,6 @@ const mapStateToProps = state => {
   return { auth: state.auth }
 }
 export default connect(mapStateToProps, {
-  onAuthStateChanged
+  onAuthStateChanged,
+  fetchMessages
 })(App);

@@ -12,7 +12,8 @@ const ModalOffer = props => {
         status: "pending",
         price: 0,
         time: 0,
-        note: ""
+        note: "",
+        collaborateCreated: false
     });
 
     const { addToast } = useToasts();

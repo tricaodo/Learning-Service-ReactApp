@@ -17,7 +17,7 @@ export const newCollaboration = ({ offer: { id, service, toUser, time }, fromUse
     }
 )
 
-export const sentMessage = ({ offer: { service, toUser }, fromUser }) => (
+export const sendMessage = ({ offer: { service, toUser }, fromUser }) => (
     {
         isRead: false,
         type: "invitation",

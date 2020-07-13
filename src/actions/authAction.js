@@ -1,7 +1,7 @@
 import fb from "firebase/app";
 import "firebase/auth";
 import db from "../db";
-import { REGISTER, REGISTER_ERROR, SIGNIN, SIGNOUT, FETCH_USER_SERVICES } from "../types";
+import { REGISTER, REGISTER_ERROR, SIGNIN, SIGNOUT, FETCH_USER_SERVICES, FETCH_MESSAGES } from "../types";
 import history from "../history";
 
 const createProfile = profile => {
@@ -35,7 +35,7 @@ export const register = info => async dispatch => {
     }
 }
 
-const fetchUserInfo = id => {
+export const fetchUserInfo = id => {
     return db
         .collection("profiles")
         .doc(id)
@@ -62,23 +62,25 @@ export const signOut = () => async dispatch => {
     dispatch({ type: SIGNOUT })
 }
 
-export const fetchUserServices = userId => dispatch => { 
+export const fetchUserServices = userId => dispatch => {
     db
         .collection("services")
         .where("uid", "==", userId)
         .get()
         .then(res => {
-            const services = res.docs.map(doc => ({id: doc.id, ...doc.data()}));
-            dispatch({type: FETCH_USER_SERVICES, payload: services});
+            const services = res.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            dispatch({ type: FETCH_USER_SERVICES, payload: services });
         })
 }
+
+
 
 export const onAuthStateChanged = () => dispatch => {
     fb
         .auth()
-        .onAuthStateChanged(doc => {
-            if (doc) {
-                fetchUserInfo(doc.uid)
+        .onAuthStateChanged(info => {
+            if (info) {
+                fetchUserInfo(info.uid)
                     .then(doc => {
                         dispatch({ type: SIGNIN, payload: { isLoggined: true, profile: { id: doc.id, ...doc.data() } } })
                     })
@@ -86,4 +88,16 @@ export const onAuthStateChanged = () => dispatch => {
                 dispatch({ type: SIGNOUT });
             }
         })
+}
+
+export const fetchMessages = userId => dispatch => {
+    db
+        .collection("profiles")
+        .doc(userId)
+        .collection("messages")
+        .onSnapshot(snapShot => {
+            const messages = snapShot.docs.map(doc => ({messageId: doc.id, ...doc.data()}))
+            dispatch({ type: FETCH_MESSAGES, payload: messages })
+            // console.log(snapShot.docs)
+        });
 }
