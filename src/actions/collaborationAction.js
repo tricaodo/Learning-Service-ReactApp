@@ -29,4 +29,11 @@ export const collaborate = ({ collaboration, message }) => dispatch =>
             updateOfferFromCreatedCollaboration(collaboration.fromOffer)
             sendMessage(message);
             dispatch({ type: CREATE_COLLABORATION_FROM_OFFER, payload: { offerId: collaboration.fromOffer } });
-        });        
+        });
+
+export const fetchCollaborations = userId => 
+    db
+        .collection("collaborations")
+        .where("allowedPeople", "array-contains", userId)
+        .get()
+        .then(snapShot => snapShot.docs.map(doc => ({id: doc.id, ...doc.data()})));

@@ -117,7 +117,10 @@ const Navbar = (props) => {
                   </Link>
                 <Link to="/offers/received" className="navbar-item">
                   Received Offers
-                  </Link>
+                </Link>
+                <Link to="/collaborations/me" className="navbar-item">
+                  Collaborations
+                </Link>
               </div>
             </div>
             {renderAuthLink()}

@@ -19,6 +19,8 @@ import ServiceCreate from './pages/services/ServiceCreate';
 import UserServices from './pages/services/UserServices';
 import SentOffers from './pages/offers/SentOffers';
 import ReceivedOffers from './pages/offers/ReceivedOffers';
+import ReceivedCollaborations from './pages/ReceivedCollaborations';
+import Collaboration from './pages/Collaboration';
 
 class App extends React.Component {
   // constructor(props) {
@@ -76,6 +78,8 @@ class App extends React.Component {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/faq" component={FAQ} />
+            <Route exact path="/collaborations/me" component={ReceivedCollaborations} />
+            <Route path="/collaborations/:id" component={Collaboration} />
             <Route path="/services/new" component={ServiceCreate} />
             <Route path="/offers/sent" component={SentOffers} />
             <Route path="/offers/received" component={ReceivedOffers} />

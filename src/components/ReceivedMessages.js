@@ -1,12 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { updateMessageAsRead } from "../actions/authAction";
+import { useHistory } from "react-router-dom";
 
 const ReceivedMessage = ({ profile }) => {
-
+    const history = useHistory();
     const handleMessageAsRead = messageId => {
         updateMessageAsRead(profile.id, messageId)
+    }
+
+    const handleJoinCollaboration = message => {
+        updateMessageAsRead(profile.id, message.messageId)
+        history.push(message.cta);
     }
 
     const renderMessages = () => {
@@ -21,9 +26,9 @@ const ReceivedMessage = ({ profile }) => {
                     <div>
                         {message.text}
                     </div>
-                    <Link onClick={() => { }} to={message.cta}>
+                    <div onClick={() => handleJoinCollaboration(message)} >
                         <div className="button is-success">Join</div>
-                    </Link>
+                    </div>
                     <button
                         onClick={() => { handleMessageAsRead(message.messageId) }}
                         className="button is-warning">Later</button>
