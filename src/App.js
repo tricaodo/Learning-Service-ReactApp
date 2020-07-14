@@ -21,6 +21,7 @@ import SentOffers from './pages/offers/SentOffers';
 import ReceivedOffers from './pages/offers/ReceivedOffers';
 import ReceivedCollaborations from './pages/ReceivedCollaborations';
 import Collaboration from './pages/Collaboration';
+import { checkUserConnection } from "./actions/connection";
 
 class App extends React.Component {
   // constructor(props) {
@@ -39,7 +40,7 @@ class App extends React.Component {
         } else {
           reject(404);
         }
-      }, 1000);
+      }, 1500);
     })
   }
   // static getDerivedStateFromProps(props, state){
@@ -54,17 +55,21 @@ class App extends React.Component {
   // }
 
   componentDidMount() {
+    console.log("*********** didMount");
     this.props.onAuthStateChanged();
     this.processAPI()
-      .then(uid => { this.props.fetchMessages(uid)})
+      .then(uid => {
+        this.props.fetchMessages(uid)
+        checkUserConnection(uid);
+      })
       .catch(statusCode => console.log(statusCode))
   }
 
-  UNSAFE_componentWillUpdate(){
+  UNSAFE_componentWillUpdate() {
     const script = document.createElement("script");
     script.src = `${process.env.PUBLIC_URL}/js/fresh.js`;
     script.async = true
-    document.body.appendChild(script);    
+    document.body.appendChild(script);
   }
 
   render() {

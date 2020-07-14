@@ -131,7 +131,6 @@ const Navbar = (props) => {
   )
 }
 const mapStateToProps = state => {
-  console.log()
   return state
 }
 export default connect(mapStateToProps, {
