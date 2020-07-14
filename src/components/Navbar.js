@@ -27,7 +27,7 @@ const Navbar = (props) => {
           <Link to="/logout" className="navbar-item">
             <span className="button signup-button rounded is-danger raised">
               Logout
-                  </span>
+            </span>
           </Link>
         </React.Fragment>
       )

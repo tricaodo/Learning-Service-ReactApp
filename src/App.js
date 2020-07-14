@@ -24,53 +24,54 @@ import Collaboration from './pages/Collaboration';
 import { checkUserConnection } from "./actions/connection";
 
 class App extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     doneLoading: false,
-  //     scriptElement: null
-  //   }
-  // }
-  processAPI = () => {
-    return new Promise((resolve, reject) => {
-      this.props.onAuthStateChanged();
-      setTimeout(() => {
-        if (this.props.auth.profile) {
-          resolve(this.props.auth.profile.id);
-        } else {
-          reject(404);
-        }
-      }, 1500);
-    })
+  constructor(props) {
+    super(props);
+    this.state = {
+      doneLoading: false,
+    }
   }
-  // static getDerivedStateFromProps(props, state){
-  //   const {auth, fetchMessages} = props;
-  //   const {doneLoading} = state;
-
-  //   if (Object.keys(auth.profile).length > 0 && !doneLoading) {
-  //     fetchMessages(auth.profile.id);
-  //     return {doneLoading: true}
-  //   }
-  //   return null;
+  // processAPI = () => {
+  //   return new Promise((resolve, reject) => {
+  //     this.props.onAuthStateChanged();
+  //     setTimeout(() => {
+  //       if (this.props.auth.profile) {
+  //         resolve(this.props.auth.profile.id);
+  //       } else {
+  //         reject(404);
+  //       }
+  //     }, 1500);
+  //   })
   // }
+  static getDerivedStateFromProps(props, state) {
+    const { auth, fetchMessages } = props;
+    const { doneLoading } = state;
+
+    if (Object.keys(auth.profile).length > 0 && !doneLoading) {
+      fetchMessages(auth.profile.id);
+      checkUserConnection(auth.profile.id);
+      return { doneLoading: true }
+    }
+    return null;
+  }
 
   componentDidMount() {
     console.log("*********** didMount");
     this.props.onAuthStateChanged();
-    this.processAPI()
-      .then(uid => {
-        this.props.fetchMessages(uid)
-        checkUserConnection(uid);
-      })
-      .catch(statusCode => console.log(statusCode))
+    
+    // this.processAPI()
+    //   .then(uid => {
+    //     this.props.fetchMessages(uid)
+
+    //   })
+    //   .catch(statusCode => console.log(statusCode))
   }
 
-  UNSAFE_componentWillUpdate() {
-    const script = document.createElement("script");
-    script.src = `${process.env.PUBLIC_URL}/js/fresh.js`;
-    script.async = true
-    document.body.appendChild(script);
-  }
+  // UNSAFE_componentWillUpdate() {
+  //   const script = document.createElement("script");
+  //   script.src = `${process.env.PUBLIC_URL}/js/fresh.js`;
+  //   script.async = true
+  //   document.body.appendChild(script);
+  // }
 
   render() {
     if (!this.props.auth.isResolved) return <Spinner />

@@ -2,6 +2,7 @@ import fb from "firebase/app";
 import "firebase/auth";
 import db from "../db";
 import { REGISTER, REGISTER_ERROR, SIGNIN, SIGNOUT, FETCH_USER_SERVICES, FETCH_MESSAGES } from "../types";
+import { createConnectionRef, isOfflineState, isOnlineState } from "../actions/connection";
 import history from "../history";
 
 const createProfile = profile => {
@@ -47,9 +48,14 @@ export const signIn = info => async dispatch => {
     try {
         const res = await fb.auth().signInWithEmailAndPassword(info.email, info.password);
         fetchUserInfo(res.user.uid)
-            .then(doc => {
-                dispatch({ type: SIGNIN, payload: { isLoggined: true, profile: { id: doc.id, ...doc.data() } } })
-                history.push("/");
+            .then(async doc => {
+                const userStatusRef = createConnectionRef(doc.id);
+                userStatusRef
+                    .set(isOnlineState)
+                    .then(() => {
+                        dispatch({ type: SIGNIN, payload: { isLoggined: true, profile: { id: doc.id, ...doc.data() } } })
+                        history.push("/");
+                    })
             })
 
     } catch (error) {
@@ -57,8 +63,14 @@ export const signIn = info => async dispatch => {
     }
 }
 
-export const signOut = () => async dispatch => {
-    await fb.auth().signOut()
+export const signOut = uid => async dispatch => {
+    await fb
+        .auth()
+        .signOut()
+        .then(() => {
+            const userStatusRef = createConnectionRef(uid);
+            userStatusRef.set(isOfflineState);
+        })
     history.push("/");
     dispatch({ type: SIGNOUT })
 }
@@ -109,5 +121,5 @@ export const updateMessageAsRead = (userId, messageId) => {
         .doc(userId)
         .collection("messages")
         .doc(messageId)
-        .update({isRead: true});
+        .update({ isRead: true });
 }

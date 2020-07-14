@@ -1,17 +1,17 @@
 import firebase from "firebase/app";
 import "firebase/database";
 
-const isOnlineState = {
+export const isOnlineState = {
     state: "online",
     last_change: firebase.database.ServerValue.TIMESTAMP
 }
 
-const isOfflineState = {
+export const isOfflineState = {
     state: "offline",
     last_change: firebase.database.ServerValue.TIMESTAMP
 }
 
-const createConnectionRef = uid => firebase.database().ref(`status/${uid}`);
+export const createConnectionRef = uid => firebase.database().ref(`status/${uid}`);
 
 const onConnectionState = callback => {
     firebase

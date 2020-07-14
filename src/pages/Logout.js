@@ -4,8 +4,8 @@ import { signOut } from "../actions/authAction";
 import { connect } from "react-redux";
 
 class Logout extends React.Component {
-    componentDidMount() {
-        this.props.signOut();
+    componentDidMount() {        
+        this.props.signOut(this.props.profile.id);
     }
     render() {
         return (
@@ -13,6 +13,9 @@ class Logout extends React.Component {
         )
     }
 }
-export default connect(null, {
+const mapStateToProps = state => {
+    return {profile: state.auth.profile}
+}
+export default connect(mapStateToProps, {
     signOut
 })(Logout);
