@@ -1,28 +1,24 @@
 import React from 'react'
+import { connect } from "react-redux";
+import { subToCollaboration, joinCollaboration } from "../actions/collaborationAction";
+import JoinedPeople from '../components/JoinedPeople';
 
 class Collaboration extends React.Component {
+  componentDidMount() {
+    const { subToCollaboration, match, profile } = this.props
+    subToCollaboration(match.params.id)
+    joinCollaboration(match.params.id, profile.id)
+  }
 
   render() {
+    const { collaboration, joinedPeople } = this.props.collab;
     return (
-       <div className="content-wrapper">
+      <div className="content-wrapper">
         <div className="root">
-          {/* Body */}
+          <h1 className="title">{collaboration.title}</h1>
           <div className="body">
-            <div className="viewListUser">
-              <div
-                className="viewWrapItem">
-                <img
-                    className="viewAvatarItem"
-                    src="https://i.imgur.com/cVDadwb.png"
-                    alt="icon avatar"
-                />
-                <div className="viewWrapContentItem">
-                  <span className="textItem">Nickname: Filip Jerga
-                  </span>
-                  <span className="textItem">online
-                  </span>
-                </div>
-              </div>
+            <div className="viewListUser" >
+              <JoinedPeople users={joinedPeople} />
             </div>
             <div className="viewBoard">
               <div className="viewChatBoard">
@@ -43,10 +39,10 @@ class Collaboration extends React.Component {
                   <div className="viewItemRight">
                     <span className="textContentItem">hey</span>
                   </div>
-                  <div style={{float: "left", clear: "both"}}></div>
+                  <div style={{ float: "left", clear: "both" }}></div>
                 </div>
                 <div className="viewBottom">
-                  <input className="viewInput" placeholder="Type your message..."  />
+                  <input className="viewInput" placeholder="Type your message..." />
                 </div>
               </div>
             </div>
@@ -56,5 +52,9 @@ class Collaboration extends React.Component {
     )
   }
 }
-
-export default Collaboration;
+const mapStateToProps = state => {
+  return { collab: state.collab, profile: state.auth.profile };
+}
+export default connect(mapStateToProps, {
+  subToCollaboration
+})(Collaboration);
