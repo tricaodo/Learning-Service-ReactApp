@@ -89,7 +89,6 @@ export const fetchUserServices = userId => dispatch => {
 
 
 export const onAuthStateChanged = () => dispatch => {
-    console.log("onAuthStateChange")
     fb
         .auth()
         .onAuthStateChanged(info => {

@@ -55,7 +55,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log("*********** didMount");
     this.props.onAuthStateChanged();
     
     // this.processAPI()

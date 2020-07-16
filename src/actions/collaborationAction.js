@@ -1,6 +1,6 @@
 import db from "../db";
 import firebase from "firebase/app";
-import { CREATE_COLLABORATION_FROM_OFFER, FETCH_COLLABORATION, FETCH_JOINED_PEOPLE } from "../types";
+import { CREATE_COLLABORATION_FROM_OFFER, FETCH_COLLABORATION, FETCH_JOINED_PEOPLE, SUBCRIBE_TO_PROFILE, SUBCRIBE_TO_MESSAGES } from "../types";
 import { createRef } from "./helper";
 
 const createCollaboration = collaboration =>
@@ -66,4 +66,40 @@ export const joinCollaboration = (collabId, userId) => {
         .collection("collaborations")
         .doc(collabId)
         .update({ "joinedPeople": firebase.firestore.FieldValue.arrayUnion(userRef) });
+}
+
+export const leaveCollaboration = (collabId, userId) => {
+    const userRef = createRef("profiles", userId);
+    db
+        .collection("collaborations")
+        .doc(collabId)
+        .update({ "joinedPeople": firebase.firestore.FieldValue.arrayRemove(userRef) })
+}
+
+export const subToProfile = uid => dispatch => {
+    db
+        .collection("profiles")
+        .doc(uid)
+        .onSnapshot(snapShot => {
+            const profile = { id: snapShot.id, ...snapShot.data() };
+            dispatch({ type: SUBCRIBE_TO_PROFILE, payload: { profile } })
+        })
+}
+
+export const sendChatMessage = (collabId, message, timestamp) =>
+    db
+        .collection("collaborations")
+        .doc(collabId)
+        .collection("messages")
+        .doc(timestamp)
+        .set(message)
+
+export const subToChatMessages = collabId => dispatch => {
+    db
+        .collection("collaborations")
+        .doc(collabId)
+        .collection("messages")
+        .onSnapshot(snapshot => {
+            dispatch({ type: SUBCRIBE_TO_MESSAGES, payload: snapshot.docChanges()})
+        })
 }

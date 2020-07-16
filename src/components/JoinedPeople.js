@@ -1,6 +1,15 @@
 import React from "react";
 
 const JoinedPeople = ({ users }) => {
+
+    const renderUserState = state => {
+        return (
+            <span className={`textItem tag ${state === "online" ? "is-success" : "is-danger"}`}>
+                {state}
+            </span>
+        )
+    }
+
     if (users.length > 0) {
         return users.map(user => (
             <div
@@ -11,11 +20,10 @@ const JoinedPeople = ({ users }) => {
                     src={user.avatar}
                     alt="icon avatar"
                 />
-                <div className="viewWrapContentItem">
+                <div className=" viewWrapContentItem">
                     <span className="textItem">{user.fullName}
                     </span>
-                    <span className="textItem">{user.state}
-                    </span>
+                    {renderUserState(user.state)}
                 </div>
             </div>
         ))
