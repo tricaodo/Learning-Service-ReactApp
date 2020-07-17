@@ -4,6 +4,7 @@ export const createRef = (collection, docId) => db.doc(`${collection}/${docId}`)
 // helper for offer
 export const newCollaboration = ({ offer: { id, service, toUser, time }, fromUser }) => (
     {
+        status: "pending",
         serviceId: service.id,
         title: service.title,
         image: service.image,
@@ -13,7 +14,8 @@ export const newCollaboration = ({ offer: { id, service, toUser, time }, fromUse
         toUser: toUser.id,
         fromUser: fromUser.id,
         fromOffer: id,
-        createdAt: Timestamp.fromDate(new Date())
+        createdAt: Timestamp.fromDate(new Date()),
+        expiredAt: ""
     }
 )
 

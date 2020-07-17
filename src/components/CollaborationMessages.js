@@ -1,39 +1,48 @@
 import React from "react";
+import moment from "moment"
 
 const CollaborationMessages = ({ messages, user }) => {
-    // console.log(messages);
     const renderMessages = () => {
-        // messages.map(message => {
-        //     if (message.user.uid === user.id) {
-        //         console.log("==========")
-        // return (
-
-        // )
-
-        return (
-            <div className="viewWrapItemLeft">
+        if (messages.length > 0) {
+            return messages.map(message => {
+                // Message is from currently logged in USER
+                if (message.user.uid === user.id) {
+                    return (
+                        <div key={message.id} className="viewWrapItemRight">
+                            <div className="viewWrapItemRight3">
+                                <img
+                                    src={message.user.avatar}
+                                    alt="avatar"
+                                    className="peerAvatarLeft" />
                                 <div className="viewItemRight">
-                    <span className="textContentItem">hey</span>
-                </div>
-                <div className="viewWrapItemLeft3">
-                    <img src="https://i.imgur.com/cVDadwb.png" alt="avatar" className="peerAvatarLeft" />
-                    <div className="viewItemLeft">
-                        <span className="textContentItem">hey</span>
+                                    <span className="textContentItem">{message.content}</span>
+                                </div>
+                            </div>
+                            <span className="textTimeLeft">{moment(message.timestamp).fromNow()}</span>
+                        </div>
+                    )
+                }
+
+                return (
+                    <div key={message.id} className="viewWrapItemLeft">
+                        <div className="viewWrapItemLeft3">
+                            <img
+                                src={message.user.avatar}
+                                alt="avatar"
+                                className="peerAvatarLeft" />
+                            <div className="viewItemLeft">
+                                <span className="textContentItem">{message.content}</span>
+                            </div>
+                        </div>
+                        <span className="textTimeLeft">{moment(message.timestamp).fromNow()}</span>
                     </div>
-                </div>
-                <span className="textTimeLeft">Oct 31, 2019</span>
+                )
+            })
+        }
 
-            </div>
-
-        )
-
+        return null
     }
-    return (
-        <div className="viewListContentChat">
-            {renderMessages()}
-            <div style={{ float: "left", clear: "both" }}></div>
-        </div>
-    )
+    return renderMessages()
 }
 
 export default CollaborationMessages;

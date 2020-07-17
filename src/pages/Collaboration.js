@@ -6,11 +6,15 @@ import {
   subToProfile,
   leaveCollaboration,
   sendChatMessage,
-  subToChatMessages
+  subToChatMessages,
+  startCollaboration,
+  endCollaboration
 } from "../actions/collaborationAction";
 import JoinedPeople from '../components/JoinedPeople';
 import moment from "moment";
-import CollaborationMessages  from '../components/CollaborationMessages';
+import CollaborationMessages from '../components/CollaborationMessages';
+import Timer from '../components/Timer';
+import { Timestamp } from '../db';
 
 class Collaboration extends React.Component {
 
@@ -21,21 +25,27 @@ class Collaboration extends React.Component {
   componentDidMount() {
     const { match, profile, subToCollaboration, subToChatMessages } = this.props
     joinCollaboration(match.params.id, profile.id);
-    subToCollaboration(match.params.id);
-    subToChatMessages(match.params.id);
+    this.unSubToCollaboration = subToCollaboration(match.params.id);
+    this.unSubToChatMessages = subToChatMessages(match.params.id);
     this.helper();
   }
 
   helper() {
+    this.unSubToProfiles = []
     setTimeout(() => {
-      const { collab: { joinedPeople }, subToProfile } = this.props;
-      joinedPeople.forEach(person => subToProfile(person.id));
+      const { collab: { joinedPeople, collaboration }, subToProfile } = this.props;
+      joinedPeople.forEach(person => this.unSubToProfiles.push(subToProfile(person.id)));
+      if (Timestamp.now().seconds > collaboration.expiredAt.seconds)
+        this.onEndCollaboration(collaboration.id);
     }, 2000);
   }
 
   componentWillUnmount() {
-    const { match, profile } = this.props
+    const { match, profile, leaveCollaboration } = this.props
     leaveCollaboration(match.params.id, profile.id);
+    this.unSubToCollaboration();
+    this.unSubToChatMessages();
+    this.unSubToProfiles.forEach(unSubToProfile => unSubToProfile())
   }
 
   sendMessage = () => {
@@ -61,8 +71,49 @@ class Collaboration extends React.Component {
     if (e.key === "Enter") this.sendMessage();
   }
 
+  handleStartCollaboration = collaborate => {
+    const { time } = collaborate;
+    const { match: { params: { id } } } = this.props;
+    startCollaboration(id, time);
+  }
+
+  renderCollaborationHeader = collaboration => {
+    if (collaboration.status === "pending") {
+      return (
+        <div className="headerChatButton">
+          <button
+            className="button is-success"
+            onClick={() => this.handleStartCollaboration(collaboration)}>
+            Start Collaboration
+        </button>
+        </div>
+      )
+    }
+    if (collaboration.status === "activated") {
+      return (
+        collaboration.expiredAt &&
+        <Timer
+          seconds={collaboration.expiredAt.seconds - Timestamp.now().seconds}
+          handleEndCollaboration={this.onEndCollaboration}
+          collabId={collaboration.id}
+        />
+      )
+    }
+    if (collaboration.status === "finished") {
+      return (
+        <span className="tag is-warning is-large">
+          Collaboration has been finished
+        </span>
+      )
+    }
+  }
+
+  onEndCollaboration = collabId =>
+    endCollaboration(collabId)
+
   render() {
     const { collaboration, joinedPeople, messages } = this.props.collab;
+    const { profile } = this.props;
     return (
       <div className="content-wrapper">
         <div className="root">
@@ -74,18 +125,31 @@ class Collaboration extends React.Component {
             <div className="viewBoard">
               <div className="viewChatBoard">
                 <div className="headerChatBoard">
-                  <img className="viewAvatarItem" src="https://i.imgur.com/cVDadwb.png" alt="icon avatar" />
-                  <span className="textHeaderChatBoard">Filip Jerga</span>
+                  <div className="headerChatUser">
+                    <img className="viewAvatarItem" src="https://i.imgur.com/cVDadwb.png" alt="icon avatar" />
+                    <span className="textHeaderChatBoard">{profile.fullName}</span>
+                  </div>
+
+                  {this.renderCollaborationHeader(collaboration)}
+
                 </div>
-                <CollaborationMessages messages={messages} user={this.props.profile} />
+                <div className="viewListContentChat">
+                  <CollaborationMessages
+                    messages={messages}
+                    user={this.props.profile}
+                  />
+                  <div style={{ float: "left", clear: "both" }}></div>
+                </div>
                 <div className="viewBottom">
                   <input
+                    disabled={collaboration.status === "finished" || collaboration.status === "pending"}
                     value={this.state.inputValue}
                     className="viewInput"
                     placeholder="Type your message..."
                     onKeyPress={(e) => { this.handleKeyPress(e) }}
                     onChange={(e) => this.setState({ inputValue: e.target.value })} />
                   <button
+                    disabled={collaboration.status === "finished" || collaboration.status === "pending"}
                     className="button is-primary"
                     onClick={() => this.sendMessage()}
                   >
@@ -102,13 +166,14 @@ class Collaboration extends React.Component {
   }
 }
 const mapStateToProps = state => {
-  return { 
-      collab: state.collab, 
-      profile: state.auth.profile,
-     };
+  return {
+    collab: state.collab,
+    profile: state.auth.profile,
+  };
 }
 export default connect(mapStateToProps, {
   subToCollaboration,
   subToProfile,
-  subToChatMessages
+  subToChatMessages,
+  leaveCollaboration
 })(Collaboration);

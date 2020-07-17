@@ -1,6 +1,13 @@
-import db from "../db";
+import db, { Timestamp } from "../db";
 import firebase from "firebase/app";
-import { CREATE_COLLABORATION_FROM_OFFER, FETCH_COLLABORATION, FETCH_JOINED_PEOPLE, SUBCRIBE_TO_PROFILE, SUBCRIBE_TO_MESSAGES } from "../types";
+import {
+    CREATE_COLLABORATION_FROM_OFFER,
+    FETCH_COLLABORATION,
+    FETCH_JOINED_PEOPLE,
+    SUBCRIBE_TO_PROFILE,
+    SUBCRIBE_TO_MESSAGES,
+    LEAVE_COLLABORATION
+} from "../types";
 import { createRef } from "./helper";
 
 const createCollaboration = collaboration =>
@@ -56,7 +63,7 @@ export const subToCollaboration = collabId => dispatch =>
                 })
             )
         }
-        dispatch({ type: FETCH_COLLABORATION, payload: collaboration });
+        dispatch({ type: FETCH_COLLABORATION, payload: {id: collabId, ...collaboration} });
         dispatch({ type: FETCH_JOINED_PEOPLE, payload: joinedPeople });
     })
 
@@ -68,15 +75,18 @@ export const joinCollaboration = (collabId, userId) => {
         .update({ "joinedPeople": firebase.firestore.FieldValue.arrayUnion(userRef) });
 }
 
-export const leaveCollaboration = (collabId, userId) => {
+export const leaveCollaboration = (collabId, userId) => dispatch => {
     const userRef = createRef("profiles", userId);
     db
         .collection("collaborations")
         .doc(collabId)
         .update({ "joinedPeople": firebase.firestore.FieldValue.arrayRemove(userRef) })
+        .then(() => {
+            dispatch({ type: LEAVE_COLLABORATION })
+        })
 }
 
-export const subToProfile = uid => dispatch => {
+export const subToProfile = uid => dispatch => 
     db
         .collection("profiles")
         .doc(uid)
@@ -84,7 +94,7 @@ export const subToProfile = uid => dispatch => {
             const profile = { id: snapShot.id, ...snapShot.data() };
             dispatch({ type: SUBCRIBE_TO_PROFILE, payload: { profile } })
         })
-}
+
 
 export const sendChatMessage = (collabId, message, timestamp) =>
     db
@@ -94,12 +104,28 @@ export const sendChatMessage = (collabId, message, timestamp) =>
         .doc(timestamp)
         .set(message)
 
-export const subToChatMessages = collabId => dispatch => {
+export const subToChatMessages = collabId => dispatch => 
     db
         .collection("collaborations")
         .doc(collabId)
         .collection("messages")
         .onSnapshot(snapshot => {
-            dispatch({ type: SUBCRIBE_TO_MESSAGES, payload: snapshot.docChanges()})
+            dispatch({ type: SUBCRIBE_TO_MESSAGES, payload: snapshot.docChanges() })
         })
+
+
+export const startCollaboration = (collabId, time) => {
+    const timestamp = Timestamp.now().seconds.valueOf();
+    const expiredAt = new Timestamp(timestamp + time, 0);
+    db
+        .collection("collaborations")
+        .doc(collabId)
+        .update({ expiredAt, status: "activated" })
+}
+
+export const endCollaboration = collabId => {
+    db 
+        .collection("collaborations")
+        .doc(collabId)
+        .update({status: "finished"})
 }

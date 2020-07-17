@@ -1,4 +1,8 @@
-import { FETCH_COLLABORATION, FETCH_JOINED_PEOPLE, SUBCRIBE_TO_PROFILE,SUBCRIBE_TO_MESSAGES } from "../types";
+import { FETCH_COLLABORATION, 
+    FETCH_JOINED_PEOPLE, 
+    SUBCRIBE_TO_PROFILE,
+    SUBCRIBE_TO_MESSAGES,
+    LEAVE_COLLABORATION } from "../types";
 
 const INITIAL_STATE = {
     collaboration: {},
@@ -27,8 +31,9 @@ export default (state = INITIAL_STATE, action) => {
                     newMessages.push({id: change.doc.id, ...change.doc.data()});
                 }
             })
-            console.log(newMessages);
             return {...state, messages: newMessages};
+        case LEAVE_COLLABORATION:
+            return INITIAL_STATE;
         default:
             return state;
     }
