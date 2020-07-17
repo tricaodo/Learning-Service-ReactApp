@@ -7,6 +7,9 @@ import { collaborate } from "../../actions/collaborationAction";
 import { withToastManager } from "react-toast-notifications";
 class SentOffers extends React.Component {
   componentDidMount() {
+    if(!this.props.auth.profile.id){
+      return
+    }
     this.props.fetchSentOffers(this.props.auth.profile.id);
   }
 

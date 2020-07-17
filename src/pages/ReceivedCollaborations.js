@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from "react-router-dom"
+import { Link, Redirect } from "react-router-dom"
 import moment from 'moment'
 import { connect } from "react-redux";
 import { fetchCollaborations } from "../actions/collaborationAction";
@@ -12,6 +12,7 @@ class Collaborations extends React.Component {
 
     componentDidMount() {
         const { id } = this.props.auth.profile;
+        if(!id) return <Redirect to="/" />
         fetchCollaborations(id)
             .then(collaborations => this.setState({ collaborations }))
     }

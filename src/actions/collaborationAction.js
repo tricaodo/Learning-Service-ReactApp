@@ -6,9 +6,12 @@ import {
     FETCH_JOINED_PEOPLE,
     SUBCRIBE_TO_PROFILE,
     SUBCRIBE_TO_MESSAGES,
-    LEAVE_COLLABORATION
+    LEAVE_COLLABORATION,
+    UNAUTHORIZED_TO_COLLABORATION
 } from "../types";
 import { createRef } from "./helper";
+
+import history from "../history";
 
 const createCollaboration = collaboration =>
     db
@@ -44,13 +47,15 @@ export const fetchCollaborations = userId =>
         .collection("collaborations")
         .where("allowedPeople", "array-contains", userId)
         .get()
-        .then(snapShot => snapShot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        .then(snapShot => snapShot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
+        
 
 const fetchCollaborationById = (collabId, callback) =>
     db
         .collection("collaborations")
         .doc(collabId)
-        .onSnapshot(snapShot => callback(snapShot.data()))
+        .onSnapshot(
+            snapShot => callback(snapShot.data()))
 
 export const subToCollaboration = collabId => dispatch =>
     fetchCollaborationById(collabId, async collaboration => {
@@ -69,6 +74,7 @@ export const subToCollaboration = collabId => dispatch =>
 
 export const joinCollaboration = (collabId, userId) => {
     const userRef = createRef("profiles", userId);
+    console.log("errorr==============");
     db
         .collection("collaborations")
         .doc(collabId)
@@ -109,9 +115,14 @@ export const subToChatMessages = collabId => dispatch =>
         .collection("collaborations")
         .doc(collabId)
         .collection("messages")
-        .onSnapshot(snapshot => {
+        .onSnapshot(
+            snapshot => {
             dispatch({ type: SUBCRIBE_TO_MESSAGES, payload: snapshot.docChanges() })
-        })
+        }, 
+            () => {
+                history.push("/");
+                dispatch({type: UNAUTHORIZED_TO_COLLABORATION})});
+        
 
 
 export const startCollaboration = (collabId, time) => {

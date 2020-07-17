@@ -86,9 +86,7 @@ export const fetchUserServices = userId => dispatch => {
         })
 }
 
-
-
-export const onAuthStateChanged = () => dispatch => {
+export const onAuthStateChanged = () => dispatch => 
     fb
         .auth()
         .onAuthStateChanged(info => {
@@ -101,9 +99,9 @@ export const onAuthStateChanged = () => dispatch => {
                 dispatch({ type: SIGNOUT });
             }
         })
-}
 
-export const fetchMessages = userId => dispatch => {
+
+export const fetchMessages = userId => dispatch =>
     db
         .collection("profiles")
         .doc(userId)
@@ -112,7 +110,7 @@ export const fetchMessages = userId => dispatch => {
             const messages = snapShot.docs.map(doc => ({ messageId: doc.id, ...doc.data() }))
             dispatch({ type: FETCH_MESSAGES, payload: messages })
         });
-}
+
 
 export const updateMessageAsRead = (userId, messageId) => {
     db

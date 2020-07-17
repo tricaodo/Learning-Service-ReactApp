@@ -35,7 +35,7 @@ class Collaboration extends React.Component {
     setTimeout(() => {
       const { collab: { joinedPeople, collaboration }, subToProfile } = this.props;
       joinedPeople.forEach(person => this.unSubToProfiles.push(subToProfile(person.id)));
-      if (Timestamp.now().seconds > collaboration.expiredAt.seconds)
+      if (collaboration.expiredAt && Timestamp.now().seconds > collaboration.expiredAt.seconds)
         this.onEndCollaboration(collaboration.id);
     }, 2000);
   }

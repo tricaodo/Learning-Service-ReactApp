@@ -1,14 +1,20 @@
-import { FETCH_COLLABORATION, 
-    FETCH_JOINED_PEOPLE, 
+import {
+    FETCH_COLLABORATION,
+    FETCH_JOINED_PEOPLE,
     SUBCRIBE_TO_PROFILE,
     SUBCRIBE_TO_MESSAGES,
-    LEAVE_COLLABORATION } from "../types";
+    LEAVE_COLLABORATION,
+} from "../types";
+
 
 const INITIAL_STATE = {
     collaboration: {},
     joinedPeople: [],
     messages: []
 }
+
+
+
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case FETCH_COLLABORATION:
@@ -26,12 +32,13 @@ export default (state = INITIAL_STATE, action) => {
         case SUBCRIBE_TO_MESSAGES:
             const newMessages = [...state.messages];
             action.payload.forEach(change => {
-                if(change.type === "added"){
+                if (change.type === "added") {
                     // console.log(change)
-                    newMessages.push({id: change.doc.id, ...change.doc.data()});
+                    newMessages.push({ id: change.doc.id, ...change.doc.data() });
                 }
             })
-            return {...state, messages: newMessages};
+            return { ...state, messages: newMessages };
+
         case LEAVE_COLLABORATION:
             return INITIAL_STATE;
         default:

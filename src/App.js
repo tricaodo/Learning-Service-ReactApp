@@ -28,49 +28,35 @@ class App extends React.Component {
     super(props);
     this.state = {
       doneLoading: false,
+      currentInstance: this
     }
   }
-  // processAPI = () => {
-  //   return new Promise((resolve, reject) => {
-  //     this.props.onAuthStateChanged();
-  //     setTimeout(() => {
-  //       if (this.props.auth.profile) {
-  //         resolve(this.props.auth.profile.id);
-  //       } else {
-  //         reject(404);
-  //       }
-  //     }, 1500);
-  //   })
-  // }
+ 
   static getDerivedStateFromProps(props, state) {
     const { auth, fetchMessages } = props;
-    const { doneLoading } = state;
+    const { doneLoading, currentInstance } = state;
 
     if (Object.keys(auth.profile).length > 0 && !doneLoading) {
-      fetchMessages(auth.profile.id);
+      currentInstance.unSubcribeToFetchMessages = fetchMessages(auth.profile.id);
       checkUserConnection(auth.profile.id);
       return { doneLoading: true }
     }
+
+    if(!auth.profile.id){
+      currentInstance.unSubcribeToFetchMessages && currentInstance.unSubcribeToFetchMessages();
+    }
+
     return null;
   }
 
   componentDidMount() {
-    this.props.onAuthStateChanged();
-    
-    // this.processAPI()
-    //   .then(uid => {
-    //     this.props.fetchMessages(uid)
-
-    //   })
-    //   .catch(statusCode => console.log(statusCode))
+    this.unSubcribeToAuth = this.props.onAuthStateChanged(); 
   }
 
-  // UNSAFE_componentWillUpdate() {
-  //   const script = document.createElement("script");
-  //   script.src = `${process.env.PUBLIC_URL}/js/fresh.js`;
-  //   script.async = true
-  //   document.body.appendChild(script);
-  // }
+  componentWillUnmount() {
+    this.state.currentInstance.unSubcribeToFetchMessages();
+    this.unSubcribeToAuth();
+  }
 
   render() {
     if (!this.props.auth.isResolved) return <Spinner />

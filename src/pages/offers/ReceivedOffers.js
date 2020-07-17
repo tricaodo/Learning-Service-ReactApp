@@ -4,6 +4,9 @@ import { fetchReceivedOffers, processOffer } from "../../actions/offerAction";
 import ServiceItem from "../../components/service/ServiceItem"
 class ReceivedOffers extends React.Component {
   componentDidMount() {
+    if(!this.props.auth.profile.id){
+      return
+    }
     this.props.fetchReceivedOffers(this.props.auth.profile.id)
   }
 
