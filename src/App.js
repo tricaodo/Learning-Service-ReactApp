@@ -31,7 +31,7 @@ class App extends React.Component {
       currentInstance: this
     }
   }
- 
+
   static getDerivedStateFromProps(props, state) {
     const { auth, fetchMessages } = props;
     const { doneLoading, currentInstance } = state;
@@ -42,7 +42,7 @@ class App extends React.Component {
       return { doneLoading: true }
     }
 
-    if(!auth.profile.id){
+    if (!auth.profile.id) {
       currentInstance.unSubcribeToFetchMessages && currentInstance.unSubcribeToFetchMessages();
     }
 
@@ -50,7 +50,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.unSubcribeToAuth = this.props.onAuthStateChanged(); 
+    this.unSubcribeToAuth = this.props.onAuthStateChanged();
   }
 
   componentWillUnmount() {
@@ -64,8 +64,8 @@ class App extends React.Component {
       <div>
         <Router history={history}>
           <Navbar auth={this.props.auth} />
-          <Navbar auth={this.props.auth} id="navbar-clone" />
-          <Sidebar />
+          {<Navbar auth={this.props.auth} id="navbar-clone" />}
+          {/* <Sidebar /> */}
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/faq" component={FAQ} />

@@ -23,61 +23,63 @@ const Login = (props) => {
         return <Redirect to="/" />
     }
     return (
-        <div className="auth-page">
-            <div className="container has-text-centered">
-                <div className="column is-4 is-offset-4">
-                    <h3 className="title has-text-grey">Login</h3>
-                    <p className="subtitle has-text-grey">Please login to proceed.</p>
-                    <div className="box">
-                        <figure className="avatar">
-                            <img src="https://placehold.it/128x128" alt="register-logo" />
-                        </figure>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className="field">
-                                <div className="control">
-                                    <input
-                                        ref={register}
-                                        name="email"
-                                        className="input is-large"
-                                        type="email"
-                                        placeholder="Your Email"
-                                        // autoFocus=""
-                                        autoComplete="email" />
-                                    {/* <div className="form-error">
+        <section className="section" style={{ marginTop: "100px" }}>
+            <div className="container">
+                <div className="columns is-mobile is-centered ">
+                    <div className="column is-one-third">
+                        <div className="box">
+                            <h1 className="title has-text-centered has-text-grey-dark">Login</h1>
+
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                <div className="field">
+                                    <label className="label has-text-grey-dark">Email</label>
+                                    <div className="control has-icons-left has-icons-right">
+                                        <input
+                                            ref={register}
+                                            name="email"
+                                            className="input"
+                                            type="email"
+                                            placeholder="Your Email"
+                                            // autoFocus=""
+                                            autoComplete="email" />
+                                        <span className="icon is-small is-left">
+                                            <i className="fas fa-envelope"></i>
+                                        </span>
+                                        {/* <div className="form-error">
                                         <span className="help is-danger">Email is required</span>
                                         <span className="help is-danger">Email address is not valid</span>
                                     </div> */}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="field">
-                                <div className="control">
-                                    <input
-                                        ref={register}
-                                        name="password"
-                                        className="input is-large"
-                                        type="password"
-                                        placeholder="Your Password"
-                                        autoComplete="current-password" />
-                                    {/* <div className="form-error">
+                                <div className="field">
+                                    <label className="label has-text-grey-dark">Password</label>
+                                    <div className="control has-icons-left has-icons-right">
+                                        <input
+                                            ref={register}
+                                            name="password"
+                                            className="input"
+                                            type="password"
+                                            placeholder="Your Password"
+                                            autoComplete="current-password" />
+                                        <span className="icon is-small is-left">
+                                            <i className="fas fa-lock"></i>
+                                        </span>
+                                        {/* <div className="form-error">
                                         <span className="help is-danger">Password is required</span>
                                     </div> */}
+                                    </div>
                                 </div>
-                            </div>
-                            <button
-                                type="submit"
-                                className="button is-block is-info is-large is-fullwidth">
-                                Sign In
-                                    </button>
-                        </form>
+                                <div className="field">
+                                    <input
+                                        type="submit"
+                                        className="input button is-primary" value="Sign In" />
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <p className="has-text-grey">
-                        <a>Sign In With Google</a>&nbsp;
-                        <a href="/">Sign Up</a> &nbsp;·&nbsp;
-                        <a href="../">Need Help?</a>
-                    </p>
                 </div>
             </div>
-        </div>
+        </section>
     );
 }
 const mapStateToProps = state => {

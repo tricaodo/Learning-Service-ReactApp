@@ -12,9 +12,7 @@ const Navbar = (props) => {
       ?
       (
         <React.Fragment>
-          <Link to="/" className="navbar-item is-secondary">
-            Hello {props.auth.profile.fullName}
-          </Link>
+
           <div className="navbar-item has-dropdown is-hoverable">
             <a className="navbar-link">
               Messages
@@ -23,111 +21,77 @@ const Navbar = (props) => {
               <ReceivedMessages />
             </div>
           </div>
-
+          <span to="/" className="navbar-item">
+            Hello {props.auth.profile.fullName}
+          </span>
           <Link to="/logout" className="navbar-item">
-            <span className="button signup-button rounded is-danger raised">
-              Logout
-            </span>
+            Logout
           </Link>
         </React.Fragment>
       )
       :
       (
         <React.Fragment>
-          <Link to="/login" className="navbar-item is-secondary modal-trigger" data-modal="auth-modal">
+          <Link to="/login" className="navbar-item">
             Log in
           </Link>
           <Link to="/register" className="navbar-item">
-            <span className="button signup-button rounded secondary-btn raised">
-              Register
-                  </span>
+            Register
           </Link>
         </React.Fragment>
       )
   }
 
   return (
-    <nav
-      id={props.id || ''}
-      className="navbar is-fresh is-transparent no-shadow"
-      role="navigation"
-      aria-label="main navigation">
+    <nav id={props.id || ''} className="navbar is-primary is-fixed-top " role="navigation" aria-label="main navigation">
       <div className="container">
         <div className="navbar-brand">
-          <Link to="/" className="navbar-item">
-            <div className="title">Servicio</div>
+          <Link to="/" className="navbar-item" href="#" >
+            <span className="icon">
+              <i className="fas fa-home fa-lg"></i>
+            </span>
           </Link>
-
-          <a className="navbar-item is-hidden-desktop is-hidden-tablet">
-            <div id="menu-icon-wrapper" className="menu-icon-wrapper" style={{ visibility: 'visible' }}>
-              <svg width="1000px" height="1000px">
-                <path className="path1" d="M 300 400 L 700 400 C 900 400 900 750 600 850 A 400 400 0 0 1 200 200 L 800 800"></path>
-                <path className="path2" d="M 300 500 L 700 500"></path>
-                <path className="path3" d="M 700 600 L 300 600 C 100 600 100 200 400 150 A 400 380 0 1 1 200 800 L 800 200"></path>
-              </svg>
-              <button id="menu-icon-trigger" className="menu-icon-trigger"></button>
-            </div>
-          </a>
-
-          <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar-menu">
+          <h1 className="navbar-item has-text-weight-bold is-size-4">Learning Service</h1>
+          <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false"
+            data-target="navbarBurger">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
           </a>
         </div>
 
-        <div id="navbar-menu" className="navbar-menu is-static">
-          <div className="navbar-start">
-            <a className="navbar-item is-hidden-mobile">
-              <div id="menu-icon-wrapper" className="menu-icon-wrapper" style={{ visibility: 'visible' }}>
-                <svg width="1000px" height="1000px">
-                  <path className="path1" d="M 300 400 L 700 400 C 900 400 900 750 600 850 A 400 400 0 0 1 200 200 L 800 800"></path>
-                  <path className="path2" d="M 300 500 L 700 500"></path>
-                  <path className="path3" d="M 700 600 L 300 600 C 100 600 100 200 400 150 A 400 380 0 1 1 200 800 L 800 200"></path>
-                </svg>
-                <button id="menu-icon-trigger" className="menu-icon-trigger"></button>
-              </div>
-            </a>
-          </div>
-
+        <div id="navbarBurger" className="navbar-menu">
           <div className="navbar-end">
-            <Link to="/" className="navbar-item is-secondary">
-              Home
-              </Link>
-            <Link to="/services" className="navbar-item is-secondary">
-              Services
-              </Link>
-            <Link to="/faq" className="navbar-item is-secondary">
-              FAQ
-              </Link>
+
+            <Link to="/" className="navbar-item">Home</Link>
             <div className="navbar-item has-dropdown is-hoverable">
-              <a className="navbar-link">
-                Manage
-                </a>
+              <a href="#" className="navbar-link">Manage</a>
 
               <div className="navbar-dropdown">
                 <Link to="/services/new" className="navbar-item">
                   Create Service
-                  </Link>
+                </Link>
                 <Link to={`/services/${props.auth.profile.id}`} className="navbar-item">
                   My Services
-                  </Link>
+                </Link>
+                <hr className="navbar-divider" />
                 <Link to="/offers/sent" className="navbar-item">
                   Sent Offers
-                  </Link>
+                        </Link>
                 <Link to="/offers/received" className="navbar-item">
                   Received Offers
-                </Link>
+                        </Link>
+                <hr className="navbar-divider" />
                 <Link to="/collaborations/me" className="navbar-item">
                   Collaborations
-                </Link>
+                        </Link>
               </div>
             </div>
             {renderAuthLink()}
           </div>
         </div>
       </div>
-    </nav>
+    </nav >
   )
 }
 const mapStateToProps = state => {

@@ -10,16 +10,58 @@ const RegisterForm = (props) => {
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+
             <div className="field">
+                <label class="label has-text-grey-dark">First Name</label>
                 <div className="control">
+                    <input
+                        ref={register({ required: true })}
+                        name="firstName"
+                        className="input"
+                        type="text"
+                        placeholder="First Name"
+                        autoFocus="" />
+                    {errors.fullName &&
+                        <div className="form-error">
+                            <span className="help is-danger">First Name is required</span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div className="field">
+                <label class="label has-text-grey-dark">Last Name</label>
+                <div className="control">
+                    <input
+                        ref={register({ required: true })}
+                        name="lastName"
+                        className="input"
+                        type="text"
+                        placeholder="Last Name"
+                        autoFocus="" />
+                    {errors.fullName &&
+                        <div className="form-error">
+                            <span className="help is-danger">Last Name is required</span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+            <div className="field">
+                <label class="label has-text-grey-dark">Email</label>
+                <div className="control has-icons-left has-icons-right">
                     <input
                         ref={register({ required: true, pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ })}
                         name="email"
-                        className="input is-large"
+                        className="input"
                         type="email"
-                        placeholder="Your Email"
+                        placeholder="Email"
                         autoFocus=""
                         autoComplete="email" />
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-envelope"></i>
+                    </span>
                     {errors.email &&
                         <div className="form-error">
                             {errors.email.type === "required" && <span className="help is-danger">Email is required</span>}
@@ -28,31 +70,20 @@ const RegisterForm = (props) => {
                     }
                 </div>
             </div>
+
             <div className="field">
-                <div className="control">
-                    <input
-                        ref={register({ required: true })}
-                        name="fullName"
-                        className="input is-large"
-                        type="text"
-                        placeholder="Full Name"
-                        autoFocus="" />
-                    {errors.fullName &&
-                        <div className="form-error">
-                            <span className="help is-danger">Name is required</span>
-                        </div>
-                    }
-                </div>
-            </div>
-            <div className="field">
-                <div className="control">
+                <label class="label has-text-grey-dark">Avatar</label>
+                <div className="control  has-icons-left has-icons-right">
                     <input
                         ref={register({ required: true, validate: { isValidImage } })}
                         name="avatar"
-                        className="input is-large"
+                        className="input"
                         type="text"
                         placeholder="Avatar"
                         autoFocus="" />
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-image"></i>
+                    </span>
                     {errors.avatar &&
                         <div className="form-error">
                             {errors.avatar.type === "required" && <span className="help is-danger">Avatar is required</span>}
@@ -62,14 +93,18 @@ const RegisterForm = (props) => {
                 </div>
             </div>
             <div className="field">
-                <div className="control">
+                <label class="label has-text-grey-dark">Password</label>
+                <div className="control has-icons-left has-icons-right">
                     <input
                         ref={register({ required: true, minLength: 6 })}
                         name="password"
-                        className="input is-large"
+                        className="input"
                         type="password"
                         placeholder="Your Password"
                         autoComplete="current-password" />
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-lock"></i>
+                    </span>
                     {errors.password &&
                         <div className="form-error">
                             {errors.password.type === "required" && <span className="help is-danger">Password is required</span>}
@@ -80,14 +115,18 @@ const RegisterForm = (props) => {
                 </div>
             </div>
             <div className="field">
-                <div className="control">
+                <label class="label has-text-grey-dark">Confirm Password</label>
+                <div className="control has-icons-left has-icons-right">
                     <input
-                        ref={register({ required: true, validate: {isSame: isSame(getValues, "password")} })}
+                        ref={register({ required: true, validate: { isSame: isSame(getValues, "password") } })}
                         name="passwordConfirmation"
-                        className="input is-large"
+                        className="input"
                         type="password"
-                        placeholder="Repeat Password"
+                        placeholder="Confirm Password"
                         autoComplete="current-password" />
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-lock"></i>
+                    </span>
                     {errors.passwordConfirmation &&
                         <div className="form-error">
                             {errors.passwordConfirmation.type === "required" && <span className="help is-danger">Password Confirmation is required</span>}
@@ -96,9 +135,11 @@ const RegisterForm = (props) => {
                     }
                 </div>
             </div>
-            <button
-                type="submit"
-                className="button is-block is-info is-large is-fullwidth">Register</button>
+            <div class="field">
+                <input
+                    type="submit"
+                    className="input button is-primary" value="Register" />
+            </div>
         </form>
     )
 }

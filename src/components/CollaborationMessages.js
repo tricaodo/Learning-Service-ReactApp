@@ -4,8 +4,7 @@ import moment from "moment"
 
 class CollaborationMessages extends React.Component {
 
-    scrollTo = (ref) => {
-        console.log(ref);
+    scrollTo = (ref) => {   
         if (ref) {
             ref.scrollIntoView();
         }

@@ -1,0 +1,19 @@
+.card-title{
+    margin: 0px 15px !important;
+    border-bottom: 1px solid #eeee;
+}
+.card-content{
+    padding: 1.0em;
+}
+
+.section-padding-top{
+    padding-top:7rem;
+}
+
+.card-content-border{
+    /* border-bottom: 1px solid #eeee; */
+}
+
+a.navbar-item:focus{
+    background-color: transparent!important;
+}

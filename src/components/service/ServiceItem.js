@@ -10,18 +10,36 @@ const ServiceItem = ({ service, auth, noButton, children, className }) => {
         return `${text.substr(0, maxLength)}...`
     }
 
+    console.log(service);
     return (
-        <div className="column is-one-third">
-            <div className={`feature-card is-bordered has-text-centered revealOnScroll delay-2 ${className}`} data-animation="fadeInLeft">
-                <div className="card-title">
-                    <h4>{service.title}</h4>
+        <div className="column is-one-fifth">
+            <div className="card">
+                <div className="card-image">
+                    <figure className="image is-4by3">
+                        <img src={service.image} alt={service.title} />
+                    </figure>
                 </div>
-                <div className="card-icon">
-                    <img src={service.image} alt="" />
+
+                <div className="content is-size-5 has-text-weight-medium has-text-centered card-title">
+                    {service.title}
                 </div>
-                <div className="card-text">
-                    <p>{shortText(service.description)}</p>
+                <div className="content is-size-7  card-title">
+                    <p><span className="has-text-weight-medium ">Description: </span>{shortText(service.description)}</p>
                 </div>
+                <div className="card-content">
+                    <div className="media mb-1">
+                        <div className="media-left">
+                            <figure className="image is-32x32">
+                                <img className="is-rounded" src={service.user.avatar} alt="user" />
+                            </figure>
+                        </div>
+                        <div className="media-content">
+                            <p className="is-size-7 has-text-weight-bold">{service.user.fullName}</p>
+                            <p className="is-size-7">{service.user.email}</p>
+                        </div>
+                    </div>
+                </div>
+
                 {
                     children &&
                     <div className="card-text">
@@ -30,8 +48,8 @@ const ServiceItem = ({ service, auth, noButton, children, className }) => {
                 }
                 {
                     !noButton &&
-                    <div className="card-action">
-                        <Link to={`services/${auth.profile.id}/${service.id}`} className="button btn-align-md accent-btn raised">Get Started</Link>
+                    <div className="card-footer">
+                        <Link to={`services/${auth.profile.id}/${service.id}`} className="card-footer-item button is-primary is-small">Learn More</Link >
                     </div>
                 }
             </div>

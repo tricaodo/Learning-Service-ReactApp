@@ -15,38 +15,34 @@ class ServiceDetail extends React.Component {
         if (!this.props.service) return <Spinner />
         const { service, auth } = this.props;
         return (
-            <section className="hero is-fullheight is-default is-bold service-detail-page">
-                <div className="hero-body">
-                    <div className="container has-text-centered">
-                        <div className="columns is-vcentered">
-                            <div className="column is-5">
-                                <figure className="image is-4by3">
-                                    <img src={service.image} alt="Description" />
-                                </figure>
-                            </div>
-                            <div className="column is-6 is-offset-1">
-                                <div className="service-header-container">
-                                    <div className="media service-user">
-                                    </div>
-                                    <div className="service-price">
-                                        <div className="media service-user">
-                                            <div className="media-content">
-                                                <p className="title is-4">${service.price}</p>
-                                                <p className="subtitle is-6">Per Hour</p>
-                                            </div>
+            <section className="section mt-6" style={{ paddingTop: "15rem" }}>
+                <div className="container">
+                    <div className="columns">
+                        <div className="column">
+                            <figure className="image is-4by3">
+                                <img src={service.image} alt="Description"
+                                    style={{ width: "70%", height: "70%" }} />
+                            </figure>
+                        </div>
+                        <div className="column">
+                            <div className="box">
+                                <div className="columns">
+                                    <div className="column"><i className="fas fa-dollar-sign is-size-3"></i><span
+                                        className="has-text-weight-bold is-size-3">{service.price}</span> Per Hours</div>
+                                    <div className="column"><i className="fas fa-user-edit is-size-4"></i>: {service.user.fullName}</div>
+                                    <div className="column"><i className="fas fa-list is-size-4"></i>: {service.category}</div>
+                                </div>
+
+                                <div className="columns">
+                                    <div className="column">
+                                        <h1 className="title has-text-centered">{service.title}</h1>
+                                        <h3 className="subtitle has-text-centered">{service.description}</h3>
+
+                                        <div className="has-text-centered">
+
+                                            <ModalOffer service={service} auth={auth} />
                                         </div>
                                     </div>
-                                </div>
-                                <h1 className="title service-title is-2">
-                                    {service.title}
-                                </h1>
-
-                                <h2 className="subtitle is-4">
-                                    {service.description}
-                                </h2>
-                                <br />
-                                <div className="has-text-centered">
-                                    <ModalOffer service={service} auth={auth} />
                                 </div>
                             </div>
                         </div>

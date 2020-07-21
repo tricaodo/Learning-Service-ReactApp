@@ -9,24 +9,25 @@ const Modal = props => {
         <div>
             <button onClick={() => handleActive(true)}
                 type="button"
-                className="button is-medium is-info is-outlined"
+                className="button is-primary is-outlined button-open-modal"
                 data-toggle="modal"
-                data-target="#exampleModal">
+                data-target="#offerModal">
                 Make an Offer
             </button>
-            <div className={`modal ${isActive ? "is-active" : ""}`}>
+
+            <div className={`modal ${isActive ? "is-active" : ""}`} id="offerModal">
                 <div className="modal-background"></div>
                 <div className="modal-card">
                     <header className="modal-card-head">
-                        <p className="modal-card-title">Make a Deal</p>
+                        <p className="modal-card-title">Make an Offer</p>
                         <button className="delete" aria-label="close" onClick={() => handleActive(false)}></button>
                     </header>
                     <section className="modal-card-body">
                         {props.children}
                     </section>
-                    <footer className="modal-card-foot">
-                        <button className="button is-success" onClick={() => {props.handleSubmit();handleActive(false) }}>Save changes</button>
-                        <button className="button" onClick={() => handleActive(false)}>Cancel</button>
+                    <footer className="modal-card-foot" style={{justifyContent: "center"}}>
+                        <button className="button is-success is-outlined" onClick={() => {props.handleSubmit();handleActive(false) }}>Save changes</button>
+                        <button className="button cancel-modal" onClick={() => handleActive(false)}>Cancel</button>
                     </footer>
                 </div>
             </div>

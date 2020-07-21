@@ -7,8 +7,12 @@ export const fetchServices = () => dispatch => {
     db
         .collection("services")
         .get()
-        .then(snapshot => {
-            services = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+        .then(async snapshot => {
+
+            services = await Promise.all(snapshot.docs.map(async doc => {
+                const userDoc = await doc.data().user.get();
+                return { id: doc.id, ...doc.data(), user: userDoc.data() }
+            }))
             dispatch({ type: FETCH_SERVICES, payload: services });
         })
 }

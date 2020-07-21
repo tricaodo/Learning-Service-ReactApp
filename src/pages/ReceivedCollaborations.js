@@ -12,7 +12,7 @@ class Collaborations extends React.Component {
 
     componentDidMount() {
         const { id } = this.props.auth.profile;
-        if(!id) return <Redirect to="/" />
+        if (!id) return <Redirect to="/" />
         fetchCollaborations(id)
             .then(collaborations => this.setState({ collaborations }))
     }
@@ -20,41 +20,46 @@ class Collaborations extends React.Component {
     render() {
         const { collaborations } = this.state
         return (
-            <div className="content-wrapper">
+            <section className="section" style={{ marginTop: "100px" }}>
                 <div className="container">
-                    <h1 className="title">Collaborations</h1>
-                    <div className="box content">
-                        {collaborations.map(c => (
-                            <article className="post" key={c.id}>
-                                <h4>{c.title}</h4>
-                                <div className="media">
-                                    <div className="media-left">
-                                        <p className="image is-32x32">
-                                            <img src={c.image} alt={c.image} />
-                                        </p>
-                                    </div>
-                                    <div className="media-content">
-                                        <div className="content">
-                                            <p>
-                                                <span href="#">{c.fromUser.name}</span> replied {moment(c.createdAt.toDate()).fromNow()} &nbsp;
-                                                <span className="tag">{c.status}</span>
-                                            </p>
+                    <div className="columns is-mobile is-centered is-multiline">
+                        <div className="column is-two-thirds">
+                            <h1 className="title">Collaborations</h1>
+                            <div className="box content">
+                                {collaborations.map(c => (
+                                    <article className="media" key={c.id}>
+                                        <div className="media-left">
+                                            <figure className="image is-32x32">
+                                                <img src={c.image} alt={c.image} />
+                                            </figure>
                                         </div>
-                                    </div>
-                                    <div className="media-right">
-                                        <span className="has-text-grey-light">
-                                            <Link to={`/collaborations/${c.id}`}>
-                                                <button className="button">Enter</button>
-                                            </Link>
-                                        </span>
-                                    </div>
-                                </div>
-                            </article>
-                        ))
-                        }
+                                        <div className="media-content">
+
+                                            <div className="content">
+
+                                                    <span className="has-text-weight-semibold">{c.title}  </span>
+                                                <p>
+                                                    <span className="is-size-7 is-italic">replied {moment(c.createdAt.toDate()).fromNow()} &nbsp;</span>
+                                                    <span className="tag">{c.status}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="media-right">
+                                            <span className="has-text-grey-light">
+                                                <Link to={`/collaborations/${c.id}`}>
+                                                    <button className="button is-primary is-light is-outlined">Enter</button>
+                                                </Link>
+                                            </span>
+                                        </div>
+
+                                    </article>
+                                ))
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
         )
     }
 }

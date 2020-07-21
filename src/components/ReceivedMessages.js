@@ -27,11 +27,11 @@ const ReceivedMessage = ({ profile }) => {
                         {message.text}
                     </div>
                     <div onClick={() => handleJoinCollaboration(message)} >
-                        <div className="button is-success">Join</div>
+                        <div className="button is-success is-small is-outlined mr-1">Join</div>
                     </div>
                     <button
                         onClick={() => { handleMessageAsRead(message.messageId) }}
-                        className="button is-warning">Later</button>
+                        className="button is-danger is-small is-outlined">Later</button>
                 </div>
             </div>
         ))

@@ -23,7 +23,7 @@ export const sendMessage = ({ offer: { service, toUser }, fromUser }) => (
     {
         isRead: false,
         type: "invitation",
-        text: `Hello ${toUser.fullName}, please join the collaboration...`,
+        text: `Hello ${toUser.fullName}! Please join the collaboration...`,
         cta: "",
         toUser: toUser.id,
         fromUser: {

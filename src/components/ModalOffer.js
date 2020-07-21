@@ -31,7 +31,6 @@ const ModalOffer = props => {
         createOffer(copyOffer)
             .then(
                 () => {
-                    // closeModal();
                     addToast("Offer was created successfully", { appearance: 'success', autoDismiss: true, autoDismissTimeout: 3000 })
                 },
                 error =>
@@ -52,33 +51,33 @@ const ModalOffer = props => {
     return (
         <Modal handleSubmit={handleSubmit}>
             <div className="field">
-                <input
-                    onChange={handleChange}
-                    name="note"
-                    className="input is-large"
-                    type="text"
-                    placeholder="Write some catchy note"
-                    max="5"
-                    min="0" />
+                <div className="control">
+                    <textarea
+                        className="textarea has-fixed-size"
+                        placeholder="Your Note..."
+                        onChange={handleChange}
+                        name="note"
+                    ></textarea>
+                </div>
                 <p className="help">Note can increase chance of getting the service</p>
             </div>
+
             <div className="field">
-                <input
-                    onChange={handleChange}
-                    name="time"
-                    className="input is-large"
-                    type="number"
-                    placeholder="How long you need service for ?"
-                    max="5"
-                    min="0" />
-                <p className="help">Enter time in hours</p>
-            </div>
-            <div className="service-price has-text-centered">
-                <div className="service-price-title">
-                    Uppon acceptance {props.service.user.fullName} will charge you:
+                <div className="control">
+                    <input
+                        onChange={handleChange}
+                        name="time"
+                        className="input"
+                        type="number"
+                        placeholder="How long is for the service?" />
+                    <p className="help">Enter time in hours</p>
                 </div>
-                <div className="service-price-value">
-                    <h1 className="title">${`${offerDetail.price}`}</h1>
+            </div>
+
+            <div className="has-text-centered">
+                <div className="service-price-title">
+                    <p>Uppon acceptance {props.service.user.fullName} will charge you:</p>
+                    <span className="is-size-3"><i className="fas fa-dollar-sign"></i>{`${offerDetail.price}`}</span>
                 </div>
             </div>
         </Modal>

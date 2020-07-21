@@ -82,7 +82,7 @@ class Collaboration extends React.Component {
       return (
         <div className="headerChatButton">
           <button
-            className="button is-success"
+            className="button is-success is-light is-outlined"
             onClick={() => this.handleStartCollaboration(collaboration)}>
             Start Collaboration
         </button>
@@ -101,7 +101,7 @@ class Collaboration extends React.Component {
     }
     if (collaboration.status === "finished") {
       return (
-        <span className="tag is-warning is-large">
+        <span className="tag is-danger is-small ">
           Collaboration has been finished
         </span>
       )
@@ -115,7 +115,7 @@ class Collaboration extends React.Component {
     const { collaboration, joinedPeople, messages } = this.props.collab;
     const { profile } = this.props;
     return (
-      <div className="content-wrapper">
+      <div className="content-wrapper" style={{marginTop: "150px"}}>
         <div className="root">
           <h1 className="title">{collaboration.title}</h1>
           <div className="body">
@@ -150,7 +150,7 @@ class Collaboration extends React.Component {
                     onChange={(e) => this.setState({ inputValue: e.target.value })} />
                   <button
                     disabled={collaboration.status === "finished" || collaboration.status === "pending"}
-                    className="button is-primary"
+                    className="button is-primary is-light is-outlined"
                     onClick={() => this.sendMessage()}
                   >
                     Send
