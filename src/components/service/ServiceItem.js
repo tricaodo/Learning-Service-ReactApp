@@ -10,7 +10,6 @@ const ServiceItem = ({ service, auth, noButton, children, className }) => {
         return `${text.substr(0, maxLength)}...`
     }
 
-    console.log(service);
     return (
         <div className="column is-one-fifth">
             <div className="card">
@@ -23,20 +22,10 @@ const ServiceItem = ({ service, auth, noButton, children, className }) => {
                 <div className="content is-size-5 has-text-weight-medium has-text-centered card-title">
                     {service.title}
                 </div>
-                <div className="content is-size-7  card-title">
-                    <p><span className="has-text-weight-medium ">Description: </span>{shortText(service.description)}</p>
-                </div>
-                <div className="card-content">
-                    <div className="media mb-1">
-                        <div className="media-left">
-                            <figure className="image is-32x32">
-                                <img className="is-rounded" src={service.user.avatar} alt="user" />
-                            </figure>
-                        </div>
-                        <div className="media-content">
-                            <p className="is-size-7 has-text-weight-bold">{service.user.fullName}</p>
-                            <p className="is-size-7">{service.user.email}</p>
-                        </div>
+                <div className="card-content is-size-7">
+                    <div className="content">
+                        {shortText(service.description)}
+                        <p><span className="has-text-weight-bold">Author: </span>{service.user.fullName}</p>
                     </div>
                 </div>
 
@@ -49,7 +38,9 @@ const ServiceItem = ({ service, auth, noButton, children, className }) => {
                 {
                     !noButton &&
                     <div className="card-footer">
-                        <Link to={`services/${auth.profile.id}/${service.id}`} className="card-footer-item button is-primary is-small">Learn More</Link >
+                        <div className="card-footer-item media">
+                            <Link to={`services/${service.id}`} className="is-size-7 is-primary">Learn More</Link >
+                        </div>
                     </div>
                 }
             </div>

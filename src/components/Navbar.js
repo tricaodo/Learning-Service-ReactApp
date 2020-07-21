@@ -1,11 +1,17 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from "react-router-dom";
 import { fetchMessages } from "../actions/authAction";
 import { connect } from "react-redux"
 import ReceivedMessages from './ReceivedMessages';
 const Navbar = (props) => {
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = `${process.env.PUBLIC_URL}/js/fresh.js`;
+    script.async = true;
+    document.body.appendChild(script);
+  },[])
 
   const renderAuthLink = () => {
     return props.auth.profile.fullName
@@ -43,7 +49,7 @@ const Navbar = (props) => {
   }
 
   return (
-    <nav id={props.id || ''} className="navbar is-primary is-fixed-top " role="navigation" aria-label="main navigation">
+    <nav className="navbar is-primary is-fixed-top " role="navigation" aria-label="main navigation">
       <div className="container">
         <div className="navbar-brand">
           <Link to="/" className="navbar-item" href="#" >
@@ -62,7 +68,6 @@ const Navbar = (props) => {
 
         <div id="navbarBurger" className="navbar-menu">
           <div className="navbar-end">
-
             <Link to="/" className="navbar-item">Home</Link>
             <div className="navbar-item has-dropdown is-hoverable">
               <a href="#" className="navbar-link">Manage</a>
@@ -71,7 +76,7 @@ const Navbar = (props) => {
                 <Link to="/services/new" className="navbar-item">
                   Create Service
                 </Link>
-                <Link to={`/services/${props.auth.profile.id}`} className="navbar-item">
+                <Link to={`/services`} className="navbar-item">
                   My Services
                 </Link>
                 <hr className="navbar-divider" />

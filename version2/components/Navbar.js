@@ -1,10 +1,17 @@
-/* eslint jsx-a11y/anchor-is-valid: 0 */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from "react-router-dom";
 import { fetchMessages } from "../actions/authAction";
 import { connect } from "react-redux"
 import ReceivedMessages from './ReceivedMessages';
 const Navbar = (props) => {
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = `${process.env.PUBLIC_URL}/js/fresh.js`
+    document.body.appendChild(script);
+    script.async = true;
+    console.log("useEffect");
+  }, [])
 
 
   const renderAuthLink = () => {
@@ -41,7 +48,7 @@ const Navbar = (props) => {
         </React.Fragment>
       )
   }
-
+console.log("Navbar");
   return (
     <nav id={props.id || ''} class="navbar is-primary is-fixed-top " role="navigation" aria-label="main navigation">
       <div class="container">

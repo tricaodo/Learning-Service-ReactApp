@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { fetchSentOffers } from "../../actions/offerAction";
-import ServiceItem from "../../components/service/ServiceItem"
 import { newCollaboration, sendMessage } from "../../actions/helper";
 import { collaborate } from "../../actions/collaborationAction";
 import { withToastManager } from "react-toast-notifications";

@@ -13,6 +13,7 @@ class ServiceDetail extends React.Component {
 
     render() {
         if (!this.props.service) return <Spinner />
+        
         const { service, auth } = this.props;
         return (
             <section className="section mt-6" style={{ paddingTop: "15rem" }}>
@@ -29,8 +30,22 @@ class ServiceDetail extends React.Component {
                                 <div className="columns">
                                     <div className="column"><i className="fas fa-dollar-sign is-size-3"></i><span
                                         className="has-text-weight-bold is-size-3">{service.price}</span> Per Hours</div>
-                                    <div className="column"><i className="fas fa-user-edit is-size-4"></i>: {service.user.fullName}</div>
-                                    <div className="column"><i className="fas fa-list is-size-4"></i>: {service.category}</div>
+                                    <div className="column">
+                                        <div className="media">
+                                            <div className="media-left">
+                                                <figure className="image is-32x32">
+                                                    <img className="is-rounded"
+                                                        src={`${service.user.avatar}`}
+                                                        alt={service.title} />
+
+                                                </figure>
+                                            </div>
+                                            <div className="media-content">
+                                                <span className="is-size-5">{service.user.fullName}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="column has-text-weight-medium"><i className="fas fa-list is-size-4"></i>: {service.category.toUpperCase()}</div>
                                 </div>
 
                                 <div className="columns">

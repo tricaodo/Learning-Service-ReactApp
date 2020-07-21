@@ -1,6 +1,5 @@
 import React from 'react';
 import Home from "./pages/Home";
-import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar'
 import FAQ from "./pages/FAQ";
 import Profile from "./pages/Profile";
@@ -64,8 +63,6 @@ class App extends React.Component {
       <div>
         <Router history={history}>
           <Navbar auth={this.props.auth} />
-          {<Navbar auth={this.props.auth} id="navbar-clone" />}
-          {/* <Sidebar /> */}
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/faq" component={FAQ} />
@@ -74,8 +71,8 @@ class App extends React.Component {
             <Route path="/services/new" component={ServiceCreate} />
             <Route path="/offers/sent" component={SentOffers} />
             <Route path="/offers/received" component={ReceivedOffers} />
-            <Route exact path="/services/:userId/:id" component={ServiceDetail} />
-            <Route path="/services/:userId" component={UserServices} />
+            <Route exact path="/services/:userId/:id" component={UserServices} />
+            <Route path="/services/:id" component={ServiceDetail} />
             <Route path="/services" component={Services} />
             <Route path="/profile" component={Profile} />
             <Route path="/login" component={Login} />

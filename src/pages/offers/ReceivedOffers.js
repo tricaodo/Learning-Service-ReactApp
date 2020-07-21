@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { fetchReceivedOffers, processOffer } from "../../actions/offerAction";
-import ServiceItem from "../../components/service/ServiceItem"
 class ReceivedOffers extends React.Component {
   componentDidMount() {
     if (!this.props.auth.profile.id) {
@@ -73,46 +72,7 @@ class ReceivedOffers extends React.Component {
               <p className="card-footer-item is-size-7 has-text-weight-medium "><i className="fas fa-dollar-sign fa-lg"></i>: {offer.price}</p>
             </div>
           </div>
-
-
         </div>
-
-
-
-        // <div key={offer.id} className="card">
-        //   <ServiceItem
-        //     noButton
-        //     className="offer-card"
-        //     service={offer.service}>
-        //     <div className={`tag is-large ${this.renderStatus(offer.status)}`}>
-        //       {offer.status}
-        //     </div>
-        //     <hr />
-        //     <div className="service-offer">
-        //       <div>
-        //         <span className="label">From User:</span> {offer.fromUser.fullName}
-        //       </div>
-        //       <div>
-        //         <span className="label">Note:</span> {offer.note}
-        //       </div>
-        //       <div>
-        //         <span className="label">Price:</span> ${offer.price}
-        //       </div>
-        //       <div>
-        //         <span className="label">Time:</span> {offer.time} hours
-        //       </div>
-
-        //     </div>
-        //     <hr />
-        //     {
-        //       offer.status === "pending" &&
-        //       <div>
-        //         <button className="button is-success b-m-r" onClick={() => this.handleSuccess(offer.id)}>Accept</button>
-        //         <button className="button is-danger" onClick={() => this.handleDecline(offer.id)}>Decline</button>
-        //       </div>
-        //     }
-        //   </ServiceItem>
-        // </div>
       )
     })
   }
@@ -121,7 +81,7 @@ class ReceivedOffers extends React.Component {
     return (
       <section className="section section-padding-top">
         <div className="container">
-          <h1 className="title"><i className="fas fa-gift"></i> Sent Offers</h1>
+          <h1 className="title"><i className="fas fa-gift"></i> Received Offers</h1>
           <div className="columns is-multiline">
             {this.renderReceivedOffers()}
 
