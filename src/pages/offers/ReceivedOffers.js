@@ -1,12 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchReceivedOffers, processOffer } from "../../actions/offerAction";
+import { fetchReceivedOffers, processOffer, resetReceivedOffersState } from "../../actions/offerAction";
+import Spinner from "../../components/Spinner";
+import requiredAuth from "../../components/hoc/requiredAuth"
 class ReceivedOffers extends React.Component {
   componentDidMount() {
     if (!this.props.auth.profile.id) {
       return
     }
     this.props.fetchReceivedOffers(this.props.auth.profile.id)
+  }
+
+  componentWillUnmount() {
+    this.props.resetReceivedOffersState();
   }
 
   renderStatus = status => {
@@ -78,6 +84,9 @@ class ReceivedOffers extends React.Component {
   }
 
   render() {
+    if (this.props.isFetching) {
+      return <Spinner />
+    }
     return (
       <section className="section section-padding-top">
         <div className="container">
@@ -92,9 +101,10 @@ class ReceivedOffers extends React.Component {
   }
 }
 const mapStateToProps = state => {
-  return { auth: state.auth, receivedOffers: state.offer.received };
+  return { auth: state.auth, receivedOffers: state.offer.received, isFetching: state.isFetching };
 }
 export default connect(mapStateToProps, {
   fetchReceivedOffers,
-  processOffer
-})(ReceivedOffers);
+  processOffer,
+  resetReceivedOffersState
+})(requiredAuth(ReceivedOffers));

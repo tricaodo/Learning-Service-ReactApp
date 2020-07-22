@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import { createService } from "../../actions/serviceAction";
+import requiredAuth from "../../components/hoc/requiredAuth";
 
 const ServiceCreate = props => {
     const [serviceForm, setServiceForm] = useState({
@@ -11,8 +11,6 @@ const ServiceCreate = props => {
         image: "",
         price: undefined
     });
-
-    if (!props.auth.isLoggined) return <Redirect to="/login" />
 
     const handleChange = e => {
         const { name, value } = e.target;
@@ -112,4 +110,4 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
     createService
-})(ServiceCreate);
+})(requiredAuth(ServiceCreate));

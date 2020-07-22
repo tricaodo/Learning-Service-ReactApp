@@ -1,6 +1,6 @@
 import db from "../db";
 import { createRef } from "./helper";
-import { FETCH_SENT_OFFERS, FETCH_RECEIVED_OFFERS, UPDATE_RECEIVED_OFFER } from "../types";
+import { FETCH_SENT_OFFERS, FETCH_RECEIVED_OFFERS, UPDATE_RECEIVED_OFFER, IS_FETCHING, RESET_RECEIVED_OFFERS, RESET_SENT_OFFERS } from "../types";
 
 export const createOffer = offer => {
     return db
@@ -30,9 +30,18 @@ export const fetchSentOffers = userId => dispatch => {
                 const processedData = await extractOfferData(doc.data(), "toUser");
                 return { id: doc.id, ...processedData }
             }));
+            dispatch({type: IS_FETCHING})
             dispatch({ type: FETCH_SENT_OFFERS, payload: offers });
         })
 }
+
+export const resetSentOffersState = () => {
+    return { type: RESET_SENT_OFFERS };
+}        
+
+export const resetReceivedOffersState = () => {
+    return { type: RESET_RECEIVED_OFFERS };
+}        
 
 export const fetchReceivedOffers = userId => dispatch => {
     const userRef = createRef("profiles", userId);
@@ -45,6 +54,7 @@ export const fetchReceivedOffers = userId => dispatch => {
                 const processedData = await extractOfferData(doc.data(), "fromUser");
                 return { id: doc.id, ...processedData };
             }))
+            dispatch({type: IS_FETCHING})
             dispatch({ type: FETCH_RECEIVED_OFFERS, payload: offers });
         })
 }

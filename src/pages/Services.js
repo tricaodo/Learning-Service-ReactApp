@@ -1,14 +1,20 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import { Redirect, Link } from "react-router-dom";
-import { fetchServicesForUser } from "../actions/serviceAction";
+import { Link } from "react-router-dom";
+import { fetchServicesForUser, resetServiceState } from "../actions/serviceAction";
+import requiredAuth from "../components/hoc/requiredAuth";
+import Spinner from "../components/Spinner";
 class Services extends React.Component {
 
     componentDidMount() {
         if (this.props.auth.profile.id) {
             this.props.fetchServicesForUser(this.props.auth.profile.id);
         }
+    }
+
+    componentWillUnmount() {
+        this.props.resetServiceState();
     }
 
     renderServices = () => {
@@ -43,22 +49,24 @@ class Services extends React.Component {
     }
 
     render() {
-        if (!this.props.auth.isLoggined) return <Redirect to="/login" />
-        return (
-            <section className="section section-padding-top">
-                <div className="container">
-                    <h1 className="title"><i className="fas fa-gift"></i> Received Offers</h1>
-                    <div className="columns is-multiline">
-                        {this.renderServices()}
+        if (!this.props.isFetching && this.props.services.length > 0) {
+            return (
+                <section className="section section-padding-top">
+                    <div className="container">
+                        <h1 className="title"><i className="fas fa-gift"></i> Received Offers</h1>
+                        <div className="columns is-multiline">
+                            {this.renderServices()}
+                        </div>
                     </div>
-                </div>
-            </section>
-        );
+                </section>
+            );
+        }
+        return <Spinner />
     }
 }
 const mapStateToProps = state => {
-    return { auth: state.auth, services: Object.values(state.services) };
+    return { auth: state.auth, services: Object.values(state.services), isFetching: state.isFetching };
 }
 export default connect(mapStateToProps, {
-    fetchServicesForUser
-})(Services);
+    fetchServicesForUser, resetServiceState
+})(requiredAuth(Services));

@@ -1,7 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchService, updateServiceById } from "../../actions/serviceAction";
+import { fetchService, updateServiceById, resetServiceState } from "../../actions/serviceAction";
 import history from "../../history";
+import requiredAuth from "../../components/hoc/requiredAuth";
+import Spinner from "../../components/Spinner";
 
 class ServiceEdit extends React.Component {
     constructor(props) {
@@ -17,7 +19,7 @@ class ServiceEdit extends React.Component {
 
     async componentDidMount() {
         await this.props.fetchService(this.props.match.params.id)
-        const { service } = this.props;
+        const service  = this.props.services[this.props.match.params.id];
         this.setState({
             title: service.title,
             category: service.category,
@@ -25,6 +27,10 @@ class ServiceEdit extends React.Component {
             image: service.image,
             price: service.price
         })
+    }
+
+    componentWillUnmount(){
+        this.props.resetServiceState();
     }
 
     handleChange = e => {
@@ -46,104 +52,109 @@ class ServiceEdit extends React.Component {
     }
 
     render() {
-        const { title, category, description, image, price } = this.state;
-        return (
-            <section className="section" style={{ marginTop: "50px" }}>
-                <div className="container">
-                    <div className="columns is-mobile is-centered ">
-                        <div className="column is-two-thirds">
-                            <h1 className="title has-text-centered has-text-grey-dark">Edit Service</h1>
-                            <div className="box ">
-                                <form onSubmit={this.handeSubmit}>
-                                    <div className="field">
-                                        <label className="label">Category</label>
-                                        <div className="control">
-                                            <div className="select">
-                                                <select
-                                                    name="category"
-                                                    onChange={this.handleChange}
-                                                    value={category}>
-                                                    <option value="Mathematics">Mathematics</option>
-                                                    <option value="Programming">Programming</option>
-                                                    <option value="Chemistry">Chemistry</option>
-                                                    <option value="Physic">Physic</option>
-                                                    <option value="AI">Artificial Intelligence</option>
-                                                    <option value="History">History</option>
-                                                </select>
+        console.log(this.props);
+        if (!this.props.isFetching && this.props.services[this.props.match.params.id]) {
+            const { title, category, description, image, price } = this.state;
+            return (
+                <section className="section" style={{ marginTop: "50px" }}>
+                    <div className="container">
+                        <div className="columns is-mobile is-centered ">
+                            <div className="column is-two-thirds">
+                                <h1 className="title has-text-centered has-text-grey-dark">Edit Service</h1>
+                                <div className="box ">
+                                    <form onSubmit={this.handeSubmit}>
+                                        <div className="field">
+                                            <label className="label">Category</label>
+                                            <div className="control">
+                                                <div className="select">
+                                                    <select
+                                                        name="category"
+                                                        onChange={this.handleChange}
+                                                        value={category}>
+                                                        <option value="Mathematics">Mathematics</option>
+                                                        <option value="Programming">Programming</option>
+                                                        <option value="Chemistry">Chemistry</option>
+                                                        <option value="Physic">Physic</option>
+                                                        <option value="AI">Artificial Intelligence</option>
+                                                        <option value="History">History</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="field">
-                                        <label className="label">Title</label>
-                                        <div className="control">
-                                            <input
-                                                name="title"
-                                                onChange={this.handleChange}
-                                                className="input"
-                                                type="text"
-                                                placeholder="Title"
-                                                value={title}
-                                            />
+                                        <div className="field">
+                                            <label className="label">Title</label>
+                                            <div className="control">
+                                                <input
+                                                    name="title"
+                                                    onChange={this.handleChange}
+                                                    className="input"
+                                                    type="text"
+                                                    placeholder="Title"
+                                                    value={title}
+                                                />
 
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div className="field">
-                                        <label className="label">Price per Hour</label>
-                                        <div className="control">
-                                            <input
-                                                name="price"
-                                                onChange={this.handleChange}
-                                                className="input"
-                                                type="number"
-                                                placeholder="Price/Hour"
-                                                value={price} />
+                                        <div className="field">
+                                            <label className="label">Price per Hour</label>
+                                            <div className="control">
+                                                <input
+                                                    name="price"
+                                                    onChange={this.handleChange}
+                                                    className="input"
+                                                    type="number"
+                                                    placeholder="Price/Hour"
+                                                    value={price} />
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div className="field">
-                                        <label className="label">Description</label>
-                                        <div className="control">
-                                            <textarea
-                                                name="description"
-                                                onChange={this.handleChange}
-                                                v-model="form.description"
-                                                className="textarea has-fixed-size"
-                                                placeholder="Description..."
-                                                value={description}></textarea>
+                                        <div className="field">
+                                            <label className="label">Description</label>
+                                            <div className="control">
+                                                <textarea
+                                                    name="description"
+                                                    onChange={this.handleChange}
+                                                    v-model="form.description"
+                                                    className="textarea has-fixed-size"
+                                                    placeholder="Description..."
+                                                    value={description}></textarea>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="field">
-                                        <label className="label">Image Url</label>
-                                        <div className="control">
-                                            <input
-                                                name="image"
-                                                onChange={this.handleChange}
-                                                className="input"
-                                                type="text"
-                                                placeholder="Image Url"
-                                                value={image} />
+                                        <div className="field">
+                                            <label className="label">Image Url</label>
+                                            <div className="control">
+                                                <input
+                                                    name="image"
+                                                    onChange={this.handleChange}
+                                                    className="input"
+                                                    type="text"
+                                                    placeholder="Image Url"
+                                                    value={image} />
+                                            </div>
                                         </div>
-                                    </div>
 
 
-                                    <div className="field">
-                                        <button ref="myloading" className="input button is-primary is-light is-outlined" onClick={() => { this.handleLoading() }}>Submit</button>
-                                    </div>
-                                </form>
+                                        <div className="field">
+                                            <button ref="myloading" className="input button is-primary is-light is-outlined" onClick={() => { this.handleLoading() }}>Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section >
-        )
+                </section >
+            )
+        }
+        return <Spinner />
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return { service: state.services[ownProps.match.params.id], auth: state.auth };
+const mapStateToProps = state => {
+    return { services: state.services, isFetching: state.isFetching };
 }
 
 export default connect(mapStateToProps, {
     fetchService,
-})(ServiceEdit);
+    resetServiceState
+})(requiredAuth(ServiceEdit));

@@ -4,6 +4,7 @@ import { fetchSentOffers } from "../../actions/offerAction";
 import { newCollaboration, sendMessage } from "../../actions/helper";
 import { collaborate } from "../../actions/collaborationAction";
 import { withToastManager } from "react-toast-notifications";
+import requiredAuth from "../../components/hoc/requiredAuth"
 class SentOffers extends React.Component {
   componentDidMount() {
     if (!this.props.auth.profile.id) {
@@ -133,4 +134,4 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   fetchSentOffers,
   collaborate
-})(withToastManager(SentOffers));
+})(withToastManager(requiredAuth(SentOffers)));

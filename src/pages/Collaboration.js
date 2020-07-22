@@ -15,6 +15,7 @@ import moment from "moment";
 import CollaborationMessages from '../components/CollaborationMessages';
 import Timer from '../components/Timer';
 import { Timestamp } from '../db';
+import requiredAuth from "../components/hoc/requiredAuth"
 
 class Collaboration extends React.Component {
 
@@ -23,6 +24,7 @@ class Collaboration extends React.Component {
   }
 
   componentDidMount() {
+    console.log("Hello");
     const { match, profile, subToCollaboration, subToChatMessages } = this.props
     joinCollaboration(match.params.id, profile.id);
     this.unSubToCollaboration = subToCollaboration(match.params.id);
@@ -115,7 +117,7 @@ class Collaboration extends React.Component {
     const { collaboration, joinedPeople, messages } = this.props.collab;
     const { profile } = this.props;
     return (
-      <div className="content-wrapper" style={{marginTop: "150px"}}>
+      <div className="content-wrapper" style={{ marginTop: "150px" }}>
         <div className="root">
           <h1 className="title">{collaboration.title}</h1>
           <div className="body">
@@ -176,4 +178,4 @@ export default connect(mapStateToProps, {
   subToProfile,
   subToChatMessages,
   leaveCollaboration
-})(Collaboration);
+})(requiredAuth(Collaboration));

@@ -3,6 +3,7 @@ import { Link, Redirect } from "react-router-dom"
 import moment from 'moment'
 import { connect } from "react-redux";
 import { fetchCollaborations } from "../actions/collaborationAction";
+import requiredAuth from "../components/hoc/requiredAuth";
 
 class Collaborations extends React.Component {
 
@@ -11,6 +12,7 @@ class Collaborations extends React.Component {
     }
 
     componentDidMount() {
+
         const { id } = this.props.auth.profile;
         if (!id) return <Redirect to="/" />
         fetchCollaborations(id)
@@ -37,7 +39,7 @@ class Collaborations extends React.Component {
 
                                             <div className="content">
 
-                                                    <span className="has-text-weight-semibold">{c.title}  </span>
+                                                <span className="has-text-weight-semibold">{c.title}  </span>
                                                 <p>
                                                     <span className="is-size-7 is-italic">replied {moment(c.createdAt.toDate()).fromNow()} &nbsp;</span>
                                                     <span className="tag">{c.status}</span>
@@ -66,4 +68,4 @@ class Collaborations extends React.Component {
 const mapStateToProps = state => {
     return { auth: state.auth };
 }
-export default connect(mapStateToProps)(Collaborations);
+export default connect(mapStateToProps)(requiredAuth(Collaborations));

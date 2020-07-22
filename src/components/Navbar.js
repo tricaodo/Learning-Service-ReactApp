@@ -11,14 +11,36 @@ const Navbar = (props) => {
     script.src = `${process.env.PUBLIC_URL}/js/fresh.js`;
     script.async = true;
     document.body.appendChild(script);
-  },[])
+  }, [])
 
   const renderAuthLink = () => {
     return props.auth.profile.fullName
       ?
       (
         <React.Fragment>
+          <div className="navbar-item has-dropdown is-hoverable">
+            <a href="#" className="navbar-link">Manage</a>
 
+            <div className="navbar-dropdown">
+              <Link to="/services/new" className="navbar-item">
+                Create Service
+                </Link>
+              <Link to={`/services`} className="navbar-item">
+                My Services
+                </Link>
+              <hr className="navbar-divider" />
+              <Link to="/offers/sent" className="navbar-item">
+                Sent Offers
+                        </Link>
+              <Link to="/offers/received" className="navbar-item">
+                Received Offers
+                        </Link>
+              <hr className="navbar-divider" />
+              <Link to="/collaborations/me" className="navbar-item">
+                Collaborations
+                        </Link>
+            </div>
+          </div>
           <div className="navbar-item has-dropdown is-hoverable">
             <a className="navbar-link">
               Messages
@@ -69,29 +91,6 @@ const Navbar = (props) => {
         <div id="navbarBurger" className="navbar-menu">
           <div className="navbar-end">
             <Link to="/" className="navbar-item">Home</Link>
-            <div className="navbar-item has-dropdown is-hoverable">
-              <a href="#" className="navbar-link">Manage</a>
-
-              <div className="navbar-dropdown">
-                <Link to="/services/new" className="navbar-item">
-                  Create Service
-                </Link>
-                <Link to={`/services`} className="navbar-item">
-                  My Services
-                </Link>
-                <hr className="navbar-divider" />
-                <Link to="/offers/sent" className="navbar-item">
-                  Sent Offers
-                        </Link>
-                <Link to="/offers/received" className="navbar-item">
-                  Received Offers
-                        </Link>
-                <hr className="navbar-divider" />
-                <Link to="/collaborations/me" className="navbar-item">
-                  Collaborations
-                        </Link>
-              </div>
-            </div>
             {renderAuthLink()}
           </div>
         </div>
