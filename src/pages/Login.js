@@ -1,27 +1,29 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
-import React from "react";
+import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
 import { signIn } from "../actions/authAction";
 import { useToasts } from "react-toast-notifications";
-import { Redirect } from "react-router-dom";
+import guest from "../components/hoc/guest";
 
 const Login = (props) => {
     const { register, handleSubmit } = useForm();
     const { addToast } = useToasts();
+    const loadingBtn = useRef(null);
+
     const onSubmit = data => {
+        loadingBtn.current.className = "input button is-primary is-loading";
         props
             .signIn(data)
             .then(() => {
 
             })
             .catch(error => {
+                loadingBtn.current.className = "input button is-primary";
                 addToast(error, { appearance: 'error', autoDismiss: true, autoDismissTimeout: 3000 })
             })
     }
-    if (props.auth.isLoggined) {
-        return <Redirect to="/" />
-    }
+
     return (
         <section className="section" style={{ marginTop: "100px" }}>
             <div className="container">
@@ -70,9 +72,10 @@ const Login = (props) => {
                                     </div>
                                 </div>
                                 <div className="field">
-                                    <input
+                                    <button
+                                        ref={loadingBtn}
                                         type="submit"
-                                        className="input button is-primary" value="Sign In" />
+                                        className="input button is-primary">Sign In</button>
                                 </div>
                             </form>
                         </div>
@@ -82,9 +85,7 @@ const Login = (props) => {
         </section>
     );
 }
-const mapStateToProps = state => {
-    return { auth: state.auth };
-}
-export default connect(mapStateToProps, {
+
+export default connect(null, {
     signIn
-})(Login);
+})(guest(Login));

@@ -2,9 +2,10 @@ import React from "react";
 import Spinner from "../components/Spinner";
 import { signOut } from "../actions/authAction";
 import { connect } from "react-redux";
+import requiredAuth from "../components/hoc/requiredAuth";
 
 class Logout extends React.Component {
-    componentDidMount() {        
+    componentDidMount() {
         this.props.signOut(this.props.profile.id);
     }
     render() {
@@ -14,8 +15,8 @@ class Logout extends React.Component {
     }
 }
 const mapStateToProps = state => {
-    return {profile: state.auth.profile}
+    return { profile: state.auth.profile }
 }
 export default connect(mapStateToProps, {
     signOut
-})(Logout);
+})(requiredAuth(Logout));

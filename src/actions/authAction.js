@@ -86,7 +86,7 @@ export const fetchUserServices = userId => dispatch => {
         })
 }
 
-export const onAuthStateChanged = () => dispatch => 
+export const onAuthStateChanged = () => dispatch =>
     fb
         .auth()
         .onAuthStateChanged(info => {

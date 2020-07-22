@@ -4,46 +4,31 @@ import RegisterForm from "../components/auth/RegisterForm";
 import { connect } from "react-redux";
 import { register } from "../actions/authAction";
 import { useToasts } from "react-toast-notifications";
-import { Redirect } from "react-router-dom";
+import guest from "../components/hoc/guest";
+import Spinner from "../components/Spinner";
 
 const Register = (props) => {
     const { addToast } = useToasts();
-    const handleRegister = info => {
+    const handleRegister = (info, loadingBtn) => {
+        loadingBtn.current.className = "input button is-primary is-loading";
         props
             .register(info)
-            .then(() => { })
+            .then(() => {
+                addToast(`Hi ${info.fullName}! Welcome to our service.`, { appearance: 'success', autoDismiss: true, autoDismissTimeout: 3000 })
+            })
             .catch(error => {
                 addToast(error.message, { appearance: 'error', autoDismiss: true, autoDismissTimeout: 3000 })
+                loadingBtn.current.className = "input button is-primary";
             })
     }
-    if (props.auth.isLoggined) return <Redirect to="/" />
+    if (props.isFetching) return <Spinner />
     return (
-        // <div className="auth-page">
-        //     <div className="container has-text-centered">
-        //         <div className="column is-4 is-offset-4">
-        //             <h3 className="title has-text-grey">Register</h3>
-        //             <p className="subtitle has-text-grey">Please Register to proceed.</p>
-        //             <div className="box">
-        //                 <figure className="avatar">
-        //                     <img src="https://placehold.it/128x128" alt="register-logo" />
-        //                 </figure>
-        //                 <RegisterForm handleRegister={handleRegister} />
-        //             </div>
-        //             <p className="has-text-grey">
-        //                 <a>Sign In With Google</a>&nbsp;
-        //                 <a href="/">Sign Up</a> &nbsp;·&nbsp;
-        //                 <a href="../">Need Help?</a>
-        //             </p>
-        //         </div>
-        //     </div>
-        // </div>
-
-        <section class="section" style={{ marginTop: "50px" }}>
-            <div class="container ">
-                <div class="columns is-mobile is-centered ">
-                    <div class="column is-one-third">
-                        <div class="box ">
-                            <h1 class="title has-text-centered has-text-grey-dark">Sign Up</h1>
+        <section className="section" style={{ marginTop: "50px" }}>
+            <div className="container ">
+                <div className="columns is-mobile is-centered ">
+                    <div className="column is-one-third">
+                        <div className="box ">
+                            <h1 className="title has-text-centered has-text-grey-dark">Sign Up</h1>
                             <RegisterForm handleRegister={handleRegister} />
                         </div>
                     </div>
@@ -52,9 +37,7 @@ const Register = (props) => {
         </section>
     );
 }
-const mapStateToProps = state => {
-    return { auth: state.auth };
-}
-export default connect(mapStateToProps, {
+
+export default connect(null, {
     register
-})(Register);
+})(guest(Register));

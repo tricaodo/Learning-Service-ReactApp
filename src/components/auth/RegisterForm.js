@@ -1,47 +1,29 @@
 /* eslint no-useless-escape: 0 */
-import React from "react";
+import React, {useRef} from "react";
 import { useForm } from "react-hook-form";
 import { isValidImage, isSame } from "../../helper/validations";
 
 const RegisterForm = (props) => {
     const { register, handleSubmit, errors, getValues } = useForm();
+    const loadingBtn = useRef()
     const onSubmit = data => {
-        props.handleRegister(data);
+        props.handleRegister(data, loadingBtn);
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-
             <div className="field">
-                <label class="label has-text-grey-dark">First Name</label>
+                <label className="label has-text-grey-dark">Full Name</label>
                 <div className="control">
                     <input
                         ref={register({ required: true })}
-                        name="firstName"
+                        name="fullName"
                         className="input"
                         type="text"
-                        placeholder="First Name"
+                        placeholder="Full Name"
                         autoFocus="" />
                     {errors.fullName &&
                         <div className="form-error">
-                            <span className="help is-danger">First Name is required</span>
-                        </div>
-                    }
-                </div>
-            </div>
-
-            <div className="field">
-                <label class="label has-text-grey-dark">Last Name</label>
-                <div className="control">
-                    <input
-                        ref={register({ required: true })}
-                        name="lastName"
-                        className="input"
-                        type="text"
-                        placeholder="Last Name"
-                        autoFocus="" />
-                    {errors.fullName &&
-                        <div className="form-error">
-                            <span className="help is-danger">Last Name is required</span>
+                            <span className="help is-danger">Full Name is required</span>
                         </div>
                     }
                 </div>
@@ -49,7 +31,7 @@ const RegisterForm = (props) => {
 
 
             <div className="field">
-                <label class="label has-text-grey-dark">Email</label>
+                <label className="label has-text-grey-dark">Email</label>
                 <div className="control has-icons-left has-icons-right">
                     <input
                         ref={register({ required: true, pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ })}
@@ -59,8 +41,8 @@ const RegisterForm = (props) => {
                         placeholder="Email"
                         autoFocus=""
                         autoComplete="email" />
-                    <span class="icon is-small is-left">
-                        <i class="fas fa-envelope"></i>
+                    <span className="icon is-small is-left">
+                        <i className="fas fa-envelope"></i>
                     </span>
                     {errors.email &&
                         <div className="form-error">
@@ -72,7 +54,7 @@ const RegisterForm = (props) => {
             </div>
 
             <div className="field">
-                <label class="label has-text-grey-dark">Avatar</label>
+                <label className="label has-text-grey-dark">Avatar</label>
                 <div className="control  has-icons-left has-icons-right">
                     <input
                         ref={register({ required: true, validate: { isValidImage } })}
@@ -81,8 +63,8 @@ const RegisterForm = (props) => {
                         type="text"
                         placeholder="Avatar"
                         autoFocus="" />
-                    <span class="icon is-small is-left">
-                        <i class="fas fa-image"></i>
+                    <span className="icon is-small is-left">
+                        <i className="fas fa-image"></i>
                     </span>
                     {errors.avatar &&
                         <div className="form-error">
@@ -93,7 +75,7 @@ const RegisterForm = (props) => {
                 </div>
             </div>
             <div className="field">
-                <label class="label has-text-grey-dark">Password</label>
+                <label className="label has-text-grey-dark">Password</label>
                 <div className="control has-icons-left has-icons-right">
                     <input
                         ref={register({ required: true, minLength: 6 })}
@@ -102,8 +84,8 @@ const RegisterForm = (props) => {
                         type="password"
                         placeholder="Your Password"
                         autoComplete="current-password" />
-                    <span class="icon is-small is-left">
-                        <i class="fas fa-lock"></i>
+                    <span className="icon is-small is-left">
+                        <i className="fas fa-lock"></i>
                     </span>
                     {errors.password &&
                         <div className="form-error">
@@ -115,7 +97,7 @@ const RegisterForm = (props) => {
                 </div>
             </div>
             <div className="field">
-                <label class="label has-text-grey-dark">Confirm Password</label>
+                <label className="label has-text-grey-dark">Confirm Password</label>
                 <div className="control has-icons-left has-icons-right">
                     <input
                         ref={register({ required: true, validate: { isSame: isSame(getValues, "password") } })}
@@ -124,8 +106,8 @@ const RegisterForm = (props) => {
                         type="password"
                         placeholder="Confirm Password"
                         autoComplete="current-password" />
-                    <span class="icon is-small is-left">
-                        <i class="fas fa-lock"></i>
+                    <span className="icon is-small is-left">
+                        <i className="fas fa-lock"></i>
                     </span>
                     {errors.passwordConfirmation &&
                         <div className="form-error">
@@ -135,10 +117,11 @@ const RegisterForm = (props) => {
                     }
                 </div>
             </div>
-            <div class="field">
-                <input
+            <div className="field">
+                <button
+                    ref={loadingBtn}
                     type="submit"
-                    className="input button is-primary" value="Register" />
+                    className="input button is-primary">Register</button>
             </div>
         </form>
     )
