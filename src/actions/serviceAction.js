@@ -1,4 +1,4 @@
-import { FETCH_SERVICES, FETCH_SERVICE, CREATE_SERVICE, FETCH_SERVICES_FOR_USER, UPDATE_SERVICE_BY_ID } from "../types";
+import { FETCH_SERVICES, FETCH_SERVICE, CREATE_SERVICE, FETCH_SERVICES_FOR_USER } from "../types";
 import history from "../history";
 import db from "../db";
 import { createRef } from "./helper";

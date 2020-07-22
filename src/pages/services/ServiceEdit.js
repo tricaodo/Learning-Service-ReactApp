@@ -11,7 +11,7 @@ class ServiceEdit extends React.Component {
             category: "",
             description: "",
             image: "",
-            price: ""
+            price: 0
         };
     }
 
@@ -30,7 +30,6 @@ class ServiceEdit extends React.Component {
     handleChange = e => {
         const { name, value } = e.target;
         this.setState({ [name]: value })
-        console.log(this.state);
     }
 
     handeSubmit = e => {
@@ -47,7 +46,6 @@ class ServiceEdit extends React.Component {
     }
 
     render() {
-        if (!this.state.price) return null;
         const { title, category, description, image, price } = this.state;
         return (
             <section className="section" style={{ marginTop: "50px" }}>
@@ -63,7 +61,8 @@ class ServiceEdit extends React.Component {
                                             <div className="select">
                                                 <select
                                                     name="category"
-                                                    onChange={this.handleChange}>
+                                                    onChange={this.handleChange}
+                                                    value={category}>
                                                     <option value="Mathematics">Mathematics</option>
                                                     <option value="Programming">Programming</option>
                                                     <option value="Chemistry">Chemistry</option>
@@ -88,6 +87,20 @@ class ServiceEdit extends React.Component {
 
                                         </div>
                                     </div>
+
+                                    <div className="field">
+                                        <label className="label">Price per Hour</label>
+                                        <div className="control">
+                                            <input
+                                                name="price"
+                                                onChange={this.handleChange}
+                                                className="input"
+                                                type="number"
+                                                placeholder="Price/Hour"
+                                                value={price} />
+                                        </div>
+                                    </div>
+
                                     <div className="field">
                                         <label className="label">Description</label>
                                         <div className="control">
@@ -112,18 +125,7 @@ class ServiceEdit extends React.Component {
                                                 value={image} />
                                         </div>
                                     </div>
-                                    <div className="field">
-                                        <label className="label">Price per Hour</label>
-                                        <div className="control">
-                                            <input
-                                                name="price"
-                                                onChange={this.handleChange}
-                                                className="input"
-                                                type="text"
-                                                placeholder="Price/Hour"
-                                                 />
-                                        </div>
-                                    </div>
+
 
                                     <div className="field">
                                         <button ref="myloading" className="input button is-primary is-light is-outlined" onClick={() => { this.handleLoading() }}>Submit</button>
