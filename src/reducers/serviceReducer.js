@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { FETCH_SERVICES, FETCH_SERVICE, CREATE_SERVICE, FETCH_SERVICES_FOR_USER } from "../types";
+import { FETCH_SERVICES, FETCH_SERVICE, CREATE_SERVICE, FETCH_SERVICES_FOR_USER, UPDATE_SERVICE_BY_ID } from "../types";
 
 export default (services = {}, action) => {
     switch (action.type) {

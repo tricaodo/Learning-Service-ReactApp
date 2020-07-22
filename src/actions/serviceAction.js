@@ -1,4 +1,4 @@
-import { FETCH_SERVICES, FETCH_SERVICE, CREATE_SERVICE, FETCH_SERVICES_FOR_USER } from "../types";
+import { FETCH_SERVICES, FETCH_SERVICE, CREATE_SERVICE, FETCH_SERVICES_FOR_USER, UPDATE_SERVICE_BY_ID } from "../types";
 import history from "../history";
 import db from "../db";
 import { createRef } from "./helper";
@@ -17,7 +17,7 @@ export const fetchServices = () => dispatch => {
         })
 }
 
-export const fetchService = id => dispatch => {
+export const fetchService = id => dispatch =>
     db
         .collection("services")
         .doc(id)
@@ -31,8 +31,8 @@ export const fetchService = id => dispatch => {
                 const info = { uid: user.id, fullName: user.fullName, email: user.email, avatar: user.avatar }
                 dispatch({ type: FETCH_SERVICE, payload: { id: doc.id, ...doc.data(), user: info } });
             }
-        });
-}
+        })
+
 
 
 export const createService = (user, serviceData) => dispatch => {
@@ -62,3 +62,10 @@ export const fetchServicesForUser = userId => dispatch => {
             dispatch({ type: FETCH_SERVICES_FOR_USER, payload: filterServices });
         })
 }
+
+export const updateServiceById = (serviceId, newData) =>
+    db
+        .collection("services")
+        .doc(serviceId)
+        .update(newData)
+

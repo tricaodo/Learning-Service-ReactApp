@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 const ServiceItem = ({ service, auth, noButton, children, className }) => {
-    const shortText = (text, maxLength = 50) => {
+    const shortText = (text, maxLength = 70) => {
         if (!text) return "";
         if (text.length < maxLength) return text;
         return `${text.substr(0, maxLength)}...`

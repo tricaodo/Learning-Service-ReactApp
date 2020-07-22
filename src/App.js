@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import { onAuthStateChanged, fetchMessages } from "./actions/authAction";
 import Spinner from './components/Spinner';
 import ServiceCreate from './pages/services/ServiceCreate';
+import ServiceEdit from './pages/services/ServiceEdit';
 import UserServices from './pages/services/UserServices';
 import SentOffers from './pages/offers/SentOffers';
 import ReceivedOffers from './pages/offers/ReceivedOffers';
@@ -71,6 +72,7 @@ class App extends React.Component {
             <Route path="/services/new" component={ServiceCreate} />
             <Route path="/offers/sent" component={SentOffers} />
             <Route path="/offers/received" component={ReceivedOffers} />
+            <Route exact path="/services/:id/edit" component={ServiceEdit} />
             <Route exact path="/services/:userId/:id" component={UserServices} />
             <Route path="/services/:id" component={ServiceDetail} />
             <Route path="/services" component={Services} />

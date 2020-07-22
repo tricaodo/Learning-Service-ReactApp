@@ -51,7 +51,7 @@ class ServiceDetail extends React.Component {
                                 <div className="columns">
                                     <div className="column">
                                         <h1 className="title has-text-centered">{service.title}</h1>
-                                        <h3 className="subtitle has-text-centered">{service.description}</h3>
+                                        <h3 className="subtitle mt-2 is-size-6">{service.description}</h3>
 
                                         <div className="has-text-centered">
 
