@@ -12,8 +12,7 @@ class ServiceDetail extends React.Component {
     }
 
     render() {
-        if (!this.props.service) return <Spinner />
-        
+        if (this.props.isFetching) return <Spinner />
         const { service, auth } = this.props;
         return (
             <section className="section mt-6" style={{ paddingTop: "15rem" }}>
@@ -69,7 +68,7 @@ class ServiceDetail extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    return { service: state.services[ownProps.match.params.id], auth: state.auth };
+    return { service: state.services[ownProps.match.params.id], auth: state.auth, isFetching: state.isFetching };
 }
 
 export default connect(mapStateToProps, {

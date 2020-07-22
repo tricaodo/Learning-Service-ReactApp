@@ -42,13 +42,14 @@ export const collaborate = ({ collaboration, message }) => dispatch =>
             dispatch({ type: CREATE_COLLABORATION_FROM_OFFER, payload: { offerId: collaboration.fromOffer } });
         });
 
-export const fetchCollaborations = userId =>
-    db
+export const fetchCollaborations = userId => {
+    return db
         .collection("collaborations")
-        .where("allowedPeople", "array-contains", userId)
-        .get()
-        .then(snapShot => snapShot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
-        
+    .where("allowedPeople", "array-contains", userId)
+    .get()
+    .then(snapShot => snapShot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
+}
+
 
 const fetchCollaborationById = (collabId, callback) =>
     db
@@ -68,7 +69,7 @@ export const subToCollaboration = collabId => dispatch =>
                 })
             )
         }
-        dispatch({ type: FETCH_COLLABORATION, payload: {id: collabId, ...collaboration} });
+        dispatch({ type: FETCH_COLLABORATION, payload: { id: collabId, ...collaboration } });
         dispatch({ type: FETCH_JOINED_PEOPLE, payload: joinedPeople });
     })
 
@@ -92,7 +93,7 @@ export const leaveCollaboration = (collabId, userId) => dispatch => {
         })
 }
 
-export const subToProfile = uid => dispatch => 
+export const subToProfile = uid => dispatch =>
     db
         .collection("profiles")
         .doc(uid)
@@ -110,19 +111,20 @@ export const sendChatMessage = (collabId, message, timestamp) =>
         .doc(timestamp)
         .set(message)
 
-export const subToChatMessages = collabId => dispatch => 
+export const subToChatMessages = collabId => dispatch =>
     db
         .collection("collaborations")
         .doc(collabId)
         .collection("messages")
         .onSnapshot(
             snapshot => {
-            dispatch({ type: SUBCRIBE_TO_MESSAGES, payload: snapshot.docChanges() })
-        }, 
+                dispatch({ type: SUBCRIBE_TO_MESSAGES, payload: snapshot.docChanges() })
+            },
             () => {
                 history.push("/");
-                dispatch({type: UNAUTHORIZED_TO_COLLABORATION})});
-        
+                dispatch({ type: UNAUTHORIZED_TO_COLLABORATION })
+            });
+
 
 
 export const startCollaboration = (collabId, time) => {
@@ -135,8 +137,8 @@ export const startCollaboration = (collabId, time) => {
 }
 
 export const endCollaboration = collabId => {
-    db 
+    db
         .collection("collaborations")
         .doc(collabId)
-        .update({status: "finished"})
+        .update({ status: "finished" })
 }

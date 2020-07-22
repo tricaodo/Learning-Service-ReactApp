@@ -40,7 +40,10 @@ class Services extends React.Component {
                         <div className="card-footer">
                             <p className="card-footer-item is-size-7 has-text-weight-medium "><i className="fas fa-dollar-sign fa-lg"></i>: {service.price}</p>
                             <Link to={`/services/${service.id}/edit`} className="card-footer-item is-size-7 has-text-success ">Edit</Link>
-                            <Link to={`/services/${service.id}/delete`} className="card-footer-item is-size-7 has-text-danger ">Delete</Link>
+                            <button
+                                className="card-footer-item button  is-large is-size-7 has-text-danger "
+                                style={{ width: "102.5px", height: "42px", border: "none" }}
+                            >Delete</button>
                         </div>
                     </div>
                 </div>
@@ -49,19 +52,18 @@ class Services extends React.Component {
     }
 
     render() {
-        if (!this.props.isFetching && this.props.services.length > 0) {
-            return (
-                <section className="section section-padding-top">
-                    <div className="container">
-                        <h1 className="title"><i className="fas fa-gift"></i> Received Offers</h1>
-                        <div className="columns is-multiline">
-                            {this.renderServices()}
-                        </div>
+        if (this.props.isFetching) return <Spinner />
+        return (
+            <section className="section section-padding-top">
+                <div className="container">
+                    <h1 className="title"><i className="fas fa-gift"></i> My Services</h1>
+                    <div className="columns is-multiline">
+                        {this.renderServices()}
                     </div>
-                </section>
-            );
-        }
-        return <Spinner />
+                </div>
+            </section>
+        );
+
     }
 }
 const mapStateToProps = state => {

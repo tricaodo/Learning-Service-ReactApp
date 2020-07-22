@@ -4,6 +4,7 @@ import React from 'react'
 import { fetchServices } from "../actions/serviceAction";
 import ServiceItem from '../components/service/ServiceItem';
 import Hero from '../components/Hero';
+import Spinner from "../components/Spinner";
 import { connect } from "react-redux";
 
 
@@ -20,6 +21,7 @@ class Home extends React.Component {
   }
 
   render() {
+    if (this.props.isFetching) return <Spinner />
     return (
       <div>
         <Hero />
@@ -45,7 +47,7 @@ class Home extends React.Component {
   }
 }
 const mapStateToProps = state => {
-  return { services: Object.values(state.services) };
+  return { services: Object.values(state.services), isFetching: state.isFetching };
 }
 export default connect(mapStateToProps, {
   fetchServices

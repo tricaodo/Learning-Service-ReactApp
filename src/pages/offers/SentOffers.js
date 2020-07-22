@@ -5,6 +5,7 @@ import { newCollaboration, sendMessage } from "../../actions/helper";
 import { collaborate } from "../../actions/collaborationAction";
 import { withToastManager } from "react-toast-notifications";
 import requiredAuth from "../../components/hoc/requiredAuth"
+import Spinner from "../../components/Spinner";
 class SentOffers extends React.Component {
   componentDidMount() {
     if (!this.props.auth.profile.id) {
@@ -71,37 +72,6 @@ class SentOffers extends React.Component {
           </div>
         }
       </div>
-
-      // <ServiceItem
-      //   noButton
-      //   className="offer-card"
-      //   service={offer.service}>
-      //   <div className="tag is-large">
-      //     {offer.status}
-      //   </div>
-      //   <hr />
-      //   <div className="service-offer">
-      //     <div>
-      //       <span className="label">To User:</span> {offer.toUser.fullName}
-      //     </div>
-      //     <div>
-      //       <span className="label">Note:</span> {offer.note}
-      //     </div>
-      //     <div>
-      //       <span className="label">Price:</span> ${offer.price}
-      //     </div>
-      //     <div>
-      //       <span className="label">Time:</span> {offer.time} hours
-      //           </div>
-      //   </div>
-      //   {
-      //     offer.status === "accepted" && !offer.collaborateCreated &&
-      //     <div>
-      //       <hr />
-      //       <button className="button is-success" onClick={() => this.handleCollaboration(offer)}>Collaborate</button>
-      //     </div>
-      //   }
-      // </ServiceItem>
     )
   }
 
@@ -116,6 +86,7 @@ class SentOffers extends React.Component {
   }
 
   render() {
+    if(this.props.isFetching) return <Spinner />
     return (
       <section className="section section-padding-top">
         <div className="container">
@@ -129,7 +100,7 @@ class SentOffers extends React.Component {
   }
 }
 const mapStateToProps = state => {
-  return { auth: state.auth, sentOffers: state.offer.sent }
+  return { isFetching: state.isFetching, sentOffers: state.offer.sent }
 }
 export default connect(mapStateToProps, {
   fetchSentOffers,

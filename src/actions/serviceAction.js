@@ -3,12 +3,12 @@ import history from "../history";
 import db from "../db";
 import { createRef } from "./helper";
 export const fetchServices = () => dispatch => {
+    dispatch({ type: IS_FETCHING });
     let services = []
     db
         .collection("services")
         .get()
         .then(async snapshot => {
-
             services = await Promise.all(snapshot.docs.map(async doc => {
                 const userDoc = await doc.data().user.get();
                 return { id: doc.id, ...doc.data(), user: userDoc.data() }
@@ -17,8 +17,9 @@ export const fetchServices = () => dispatch => {
         })
 }
 
-export const fetchService = id => dispatch =>
-    db
+export const fetchService = id => dispatch => {
+    dispatch({ type: IS_FETCHING });
+    return db
         .collection("services")
         .doc(id)
         .get()
@@ -28,15 +29,17 @@ export const fetchService = id => dispatch =>
             } else {
                 const userDoc = await doc.data().user.get();
                 const user = userDoc.data();
-                const info = { uid: user.id, fullName: user.fullName, email: user.email, avatar: user.avatar };                
+                const info = { uid: user.id, fullName: user.fullName, email: user.email, avatar: user.avatar };
                 dispatch({ type: IS_FETCHING });
                 dispatch({ type: FETCH_SERVICE, payload: { id: doc.id, ...doc.data(), user: info } });
             }
         })
+}
+
 
 export const resetServiceState = () => {
     return { type: RESET_PREVIOUS_SERVICES };
-}        
+}
 
 
 
@@ -54,6 +57,7 @@ export const createService = (user, serviceData) => dispatch => {
 }
 
 export const fetchServicesForUser = userId => dispatch => {
+    dispatch({ type: IS_FETCHING });
     let services = []
     db
         .collection("services")

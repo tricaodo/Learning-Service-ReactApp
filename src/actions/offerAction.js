@@ -21,6 +21,7 @@ const extractOfferData = async (offer, offerType) => {
 
 export const fetchSentOffers = userId => dispatch => {
     const userRef = createRef("profiles", userId);
+    dispatch({type: IS_FETCHING})
     return db
         .collection("offers")
         .where("fromUser", "==", userRef)
@@ -29,8 +30,7 @@ export const fetchSentOffers = userId => dispatch => {
             const offers = await Promise.all(snapshot.docs.map(async doc => {
                 const processedData = await extractOfferData(doc.data(), "toUser");
                 return { id: doc.id, ...processedData }
-            }));
-            dispatch({type: IS_FETCHING})
+            }));            
             dispatch({ type: FETCH_SENT_OFFERS, payload: offers });
         })
 }
@@ -45,6 +45,7 @@ export const resetReceivedOffersState = () => {
 
 export const fetchReceivedOffers = userId => dispatch => {
     const userRef = createRef("profiles", userId);
+    dispatch({type: IS_FETCHING})
     return db
         .collection("offers")
         .where("toUser", "==", userRef)
@@ -54,7 +55,7 @@ export const fetchReceivedOffers = userId => dispatch => {
                 const processedData = await extractOfferData(doc.data(), "fromUser");
                 return { id: doc.id, ...processedData };
             }))
-            dispatch({type: IS_FETCHING})
+            
             dispatch({ type: FETCH_RECEIVED_OFFERS, payload: offers });
         })
 }

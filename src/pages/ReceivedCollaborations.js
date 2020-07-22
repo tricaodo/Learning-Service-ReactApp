@@ -1,25 +1,27 @@
 import React from 'react'
-import { Link, Redirect } from "react-router-dom"
+import { Link } from "react-router-dom"
 import moment from 'moment'
 import { connect } from "react-redux";
 import { fetchCollaborations } from "../actions/collaborationAction";
 import requiredAuth from "../components/hoc/requiredAuth";
+import Spinner from '../components/Spinner';
 
 class Collaborations extends React.Component {
 
     state = {
-        collaborations: []
+        collaborations: [],
+        isFetching: true
     }
 
     componentDidMount() {
-
         const { id } = this.props.auth.profile;
-        if (!id) return <Redirect to="/" />
         fetchCollaborations(id)
-            .then(collaborations => this.setState({ collaborations }))
+            .then(collaborations => this.setState({ collaborations, isFetching: false }))
+        
     }
 
     render() {
+        if (this.state.isFetching) return <Spinner />
         const { collaborations } = this.state
         return (
             <section className="section" style={{ marginTop: "100px" }}>
