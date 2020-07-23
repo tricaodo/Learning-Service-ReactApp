@@ -38,12 +38,12 @@ const ServiceCreate = props => {
                                             <select
                                                 name="category"
                                                 onChange={handleChange}>
-                                                <option value="mathematics">Mathematics</option>
-                                                <option value="programming">Programming</option>
-                                                <option value="chemistry">Chemistry</option>
-                                                <option value="physic">Physic</option>
-                                                <option value="ai">Artificial Intelligence</option>
-                                                <option value="history">History</option>
+                                                <option value="Mathematics">Mathematics</option>
+                                                <option value="Programming">Programming</option>
+                                                <option value="Chemistry">Chemistry</option>
+                                                <option value="Physic">Physic</option>
+                                                <option value="AI">Artificial Intelligence</option>
+                                                <option value="History">History</option>
                                             </select>
                                         </div>
                                     </div>

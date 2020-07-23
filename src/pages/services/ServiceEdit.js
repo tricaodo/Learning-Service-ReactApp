@@ -52,7 +52,6 @@ class ServiceEdit extends React.Component {
     }
 
     render() {
-        console.log(this.props);
         if (!this.props.isFetching && this.props.services[this.props.match.params.id]) {
             const { title, category, description, image, price } = this.state;
             return (

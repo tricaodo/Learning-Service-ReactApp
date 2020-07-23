@@ -4,16 +4,21 @@ import { connect } from "react-redux";
 import { fetchService } from "../actions/serviceAction";
 import Spinner from "../components/Spinner";
 import ModalOffer from "../components/ModalOffer";
+import requiredAuth from "../components/hoc/requiredAuth";
+import { Redirect } from "react-router-dom";
 
 class ServiceDetail extends React.Component {
 
     componentDidMount() {
         this.props.fetchService(this.props.match.params.id);
+        
     }
 
     render() {
+        console.log("=============================");
         if (this.props.isFetching) return <Spinner />
         const { service, auth } = this.props;
+        if(!service) return <Redirect to="/" />
         return (
             <section className="section mt-6" style={{ paddingTop: "15rem" }}>
                 <div className="container">
@@ -73,4 +78,4 @@ const mapStateToProps = (state, ownProps) => {
 
 export default connect(mapStateToProps, {
     fetchService
-})(ServiceDetail);
+})(requiredAuth(ServiceDetail));

@@ -1,7 +1,7 @@
 /* eslint no-useless-escape: 0 */
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
-import { isValidImage, isSame } from "../../helper/validations";
+import { isSame } from "../../helper/validations";
 
 const RegisterForm = (props) => {
     const { register, handleSubmit, errors, getValues } = useForm();
@@ -57,7 +57,7 @@ const RegisterForm = (props) => {
                 <label className="label has-text-grey-dark">Avatar</label>
                 <div className="control  has-icons-left has-icons-right">
                     <input
-                        ref={register({ required: true, validate: { isValidImage } })}
+                        ref={register({ required: true })}
                         name="avatar"
                         className="input"
                         type="text"
@@ -69,7 +69,6 @@ const RegisterForm = (props) => {
                     {errors.avatar &&
                         <div className="form-error">
                             {errors.avatar.type === "required" && <span className="help is-danger">Avatar is required</span>}
-                            {errors.avatar.type === "isValidImage" && <span className="help is-danger">Extension is not valid</span>}
                         </div>
                     }
                 </div>

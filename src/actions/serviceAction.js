@@ -1,4 +1,4 @@
-import { FETCH_SERVICES, FETCH_SERVICE, CREATE_SERVICE, FETCH_SERVICES_FOR_USER, IS_FETCHING, RESET_PREVIOUS_SERVICES } from "../types";
+import { FETCH_SERVICES, FETCH_SERVICE, CREATE_SERVICE, FETCH_SERVICES_FOR_USER, IS_FETCHING, RESET_PREVIOUS_SERVICES, DELETE_SERVICE_BY_ID } from "../types";
 import history from "../history";
 import db from "../db";
 import { createRef } from "./helper";
@@ -77,4 +77,14 @@ export const updateServiceById = (serviceId, newData) =>
         .collection("services")
         .doc(serviceId)
         .update(newData)
+
+
+export const deleteServiceById = serviceId => dispatch =>
+    db
+        .collection("services")
+        .doc(serviceId)
+        .delete()
+        .then(() => {
+            dispatch({type: DELETE_SERVICE_BY_ID, payload: serviceId})
+        })
 

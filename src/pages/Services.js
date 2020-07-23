@@ -2,11 +2,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchServicesForUser, resetServiceState } from "../actions/serviceAction";
+import { fetchServicesForUser, resetServiceState, deleteServiceById } from "../actions/serviceAction";
 import requiredAuth from "../components/hoc/requiredAuth";
+import { withToastManager } from "react-toast-notifications";
 import Spinner from "../components/Spinner";
 class Services extends React.Component {
-
     componentDidMount() {
         if (this.props.auth.profile.id) {
             this.props.fetchServicesForUser(this.props.auth.profile.id);
@@ -15,6 +15,21 @@ class Services extends React.Component {
 
     componentWillUnmount() {
         this.props.resetServiceState();
+    }
+
+    handleDelete = service => {
+        const { toastManager } = this.props;
+        const currentUserId = this.props.auth.profile.id;
+        const serviceUserId = service.user.id;
+        if (currentUserId === serviceUserId) {
+            this.props.deleteServiceById(service.id)
+                .then(() => {
+                    toastManager.add(`Delete ${service.title} Successfully`, { appearance: 'success', autoDismiss: true, autoDismissTimeout: 3000 });
+                })
+                .catch((error) => {
+                    toastManager.add(error.message, { appearance: 'error', autoDismiss: true, autoDismissTimeout: 3000 });
+                })
+        }
     }
 
     renderServices = () => {
@@ -43,7 +58,7 @@ class Services extends React.Component {
                             <button
                                 className="card-footer-item button  is-large is-size-7 has-text-danger "
                                 style={{ width: "102.5px", height: "42px", border: "none" }}
-                            >Delete</button>
+                                onClick={() => this.handleDelete(service)}>Delete</button>
                         </div>
                     </div>
                 </div>
@@ -70,5 +85,7 @@ const mapStateToProps = state => {
     return { auth: state.auth, services: Object.values(state.services), isFetching: state.isFetching };
 }
 export default connect(mapStateToProps, {
-    fetchServicesForUser, resetServiceState
-})(requiredAuth(Services));
+    fetchServicesForUser,
+    resetServiceState,
+    deleteServiceById
+})(withToastManager(requiredAuth(Services)));
