@@ -17,13 +17,12 @@ What I have learned during this progress of building this application:
 ### Link website to test: https://learningservice.herokuapp.com/
 
 ### Workflow of this application:
-1. The tutor can create the services.
-2. The student can make an offer for the service that they want (how many hours do they want).
-3. After that, the tutor can accept/decline the offer.
+1. Tutors can create services.
+2. A student can make an offer for the service they want from a tutor (how many hours, etc.) Tutor can accept or decline student’s offer.
+3. If the tutor accepts the offer, the student can join a collaboration with the tutor at any time. When the student joins the collaboration, the tutor will receive a notification.
 4. If they accept the offer, the student can join the collaboration anytime.
-5. When the student join the collaboration, the tutor will get the notification about that.
-6. When they start the collaboration, they can send the messages to each other. The time will also count down.
-7. When the time is up, the system will automatically ends the collaboration. They cannot interact with each other anymore.
+5. When they start the collaboration, time will count down.
+6. When the time is up, the system will automatically end the collaboration & tutor and student will no longer be able to interact with each other.
 
 ### Set up the application:
 1. Open your terminal and run the following commands:
