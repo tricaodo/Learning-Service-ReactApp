@@ -12,9 +12,9 @@ What I have learned during this progress of building this application:
 - React, Redux, Redux-Thunk, Middleware, Higher Order Component, Authentication, etc
 
 ### HomePage image:
-<img width="1042" alt="Screen Shot 2019-11-22 at 10 31 44 PM" src="https://user-images.githubusercontent.com/42249214/69474596-0cc9a680-0d78-11ea-8999-07774fd6270c.png">
+<img width="1907" alt="Screen Shot 2020-07-25 at 5 29 52 PM" src="https://user-images.githubusercontent.com/42249214/88469054-589d9400-cea1-11ea-8b39-cddbd23d966e.png">
 
-### Link to test: https://learningservice.herokuapp.com/
+### Link website to test: https://learningservice.herokuapp.com/
 
 ### Workflow of this application:
 1. The tutor can create the services.
